@@ -1,0 +1,8 @@
+GENE	CHR	SNPnum	snpBP	P	logP	designation
+Os03g0122600	3	1	1278045	8.74e-09	8.05848856737	Os03g0122600 :: MIKC-type MADS-box protein%2C Flowering activator%2C Short-day/long-day promotion of flowering (Os03t0122600-01)%3BTranscription factor%2C MADS-box domain containing protein. (Os03t0122600-02)
+Os03g0122600	3	2	1283193	2.14e-08	7.66958622665	Os03g0122600 :: MIKC-type MADS-box protein%2C Flowering activator%2C Short-day/long-day promotion of flowering (Os03t0122600-01)%3BTranscription factor%2C MADS-box domain containing protein. (Os03t0122600-02)
+Os03g0122600	3	3	1275151	2.98e-08	7.52578373592	Os03g0122600 :: MIKC-type MADS-box protein%2C Flowering activator%2C Short-day/long-day promotion of flowering (Os03t0122600-01)%3BTranscription factor%2C MADS-box domain containing protein. (Os03t0122600-02)
+Os03g0122600	3	4	1286390	4.79e-08	7.31966448659	Os03g0122600 :: MIKC-type MADS-box protein%2C Flowering activator%2C Short-day/long-day promotion of flowering (Os03t0122600-01)%3BTranscription factor%2C MADS-box domain containing protein. (Os03t0122600-02)
+Os03g0122600	3	5	1300254	5.04e-08	7.29756946355	Os03g0122600 :: MIKC-type MADS-box protein%2C Flowering activator%2C Short-day/long-day promotion of flowering (Os03t0122600-01)%3BTranscription factor%2C MADS-box domain containing protein. (Os03t0122600-02)
+Os06g0164900	6	6	3287871	5.29e-08	7.27654432796	Os06g0164900 :: Similar to OSIGBa0147J19.7 protein. (Os06t0164900-00)
+Os03g0122600	3	7	1272815	7.36e-08	7.13312218566	Os03g0122600 :: MIKC-type MADS-box protein%2C Flowering activator%2C Short-day/long-day promotion of flowering (Os03t0122600-01)%3BTranscription factor%2C MADS-box domain containing protein. (Os03t0122600-02)
