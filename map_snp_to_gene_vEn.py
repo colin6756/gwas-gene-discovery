@@ -85,7 +85,7 @@ def summary():
                 chrom = col[1]
                 position = int(col[2])
                 start = position - 1000
-                end = position - 1000
+                end = position + 1000
                 snpnum = col[0]
                 pval = col[3]
                 logP = col[4]
@@ -97,16 +97,16 @@ def summary():
                 ext = "/overlap/region/oryza_sativa/{}:{}-{}:1?feature=gene".format(chrom, start, end)
 
                 r = requests.get(server+ext, headers={ "Content-Type" : "application/json"})
+                
+                
+                #print(r.json())
+                if len(r.json()) != 0:
+                    content=r.json()[0]
+                    gene = content[u'gene_id']
+                    description = content[u'description']
+                    sense = content[u'description']
 
-                content=r.json()
-                for i in content:
-                    if i == "\n":
-                        continue
-                    data = content[0]
-                    gene = data[u'gene_id']
-                    description = data[u'description']
-                    sense = data[u'description']
-                print("{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}".format(gene, chrom, snpnum, position, pval, logP, snpeffect, alleleinfo, description, sense), file=fs)               
+                    print("{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}".format(gene, chrom, snpnum, position, pval, logP, snpeffect, alleleinfo, description, sense), file=fs)               
         fs.close()
     fr.close()
     #end of get genes
