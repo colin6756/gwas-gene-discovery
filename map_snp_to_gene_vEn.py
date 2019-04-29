@@ -7,9 +7,15 @@ def mkfolder():
     All results will then be generated within it. The main function will take the script back into parent.''' 
     print("Commenced at {}".format(datetime.datetime.now()))
     folder=str(args.f)[6:-4]
-    os.mkdir(folder)
-    shutil.copy(args.f, folder)
-    os.chdir(folder)
+    if os.path.exists(folder):
+        shutil.rmtree(folder)
+        os.mkdir(folder)
+        shutil.copy(args.f, folder)
+        os.chdir(folder)
+    elif not os.path.exists(folder):
+        os.mkdir(folder)
+        shutil.copy(args.f, folder)
+        os.chdir(folder)
     # end of mkfolder()
 
 def formatcsv():

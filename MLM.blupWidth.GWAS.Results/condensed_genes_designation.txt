@@ -1,0 +1,8 @@
+Os05g0188500 :: Similar to SCC3. (Os05t0188500-01);Armadillo-type fold domain containing protein. (Os05t0188500-02)
+Os05g0188600 :: Conserved hypothetical protein. (Os05t0188600-01);Hypothetical conserved gene. (Os05t0188600-02)
+Os05g0188700 :: Leucine-rich repeat domain containing protein. (Os05t0188700-01)
+Os05g0187500 :: IQ calmodulin-binding motif family protein, Positive regulator of brassinosteroid signalling, Regulation of grain width and weight (Os05t0187500-01)
+Os05g0187000 :: Beta 2 subunit of 20S proteasome (20S proteasome beta subunit). (Os05t0187000-01);Similar to Proteasome subunit beta type 7-A. (Os05t0187000-02)
+Os05g0187100 :: Similar to Hexokinase. (Os05t0187100-01);Cytosolic hexokinase, Sugar signaling and metabolism (Os05t0187100-02)
+Os05g0187800 :: Similar to Derlin-1. (Os05t0187800-01)
+Os05g0186900 :: Similar to Auxin-responsive protein IAA16. (Os05t0186900-01)
