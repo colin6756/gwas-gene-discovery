@@ -1,4 +1,0 @@
-ONDEX-ID	ACCESSION	GENE NAME	CHRO	START	TAXID	SCORE	USER	QTL	EVIDENCE
-47205	OS03G0122600	MADS50	3	1270320	39947	19.29	yes	qtaro_301//qtaro_301||qtaro_531//qtaro_531||qtaro_284//qtaro_284||qtaro_900//qtaro_900||qtaro_282//qtaro_282||qtaro_297//qtaro_297||qtaro_530//qtaro_530||qtaro_153//qtaro_153||qtaro_1041//qtaro_1041||qtaro_731//qtaro_731	Publication__4__PMID:22523192//PMID:21709243//PMID:15941401//PMID:9193074||TO__1__root length
-74605	OS06G0164900	OS06G0164900	6	3286611	39947	0.00	yes	qtaro_399//qtaro_399||qtaro_447//qtaro_447||qtaro_4//qtaro_4||qtaro_234//qtaro_234||qtaro_666//qtaro_666||qtaro_2//qtaro_2||qtaro_607//qtaro_607||qtaro_400//qtaro_400||qtaro_448//qtaro_448||qtaro_674//qtaro_674||qtaro_401//qtaro_401||qtaro_817//qtaro_817	
-

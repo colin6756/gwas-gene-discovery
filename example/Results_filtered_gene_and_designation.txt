@@ -1,2 +1,0 @@
-Os03g0122600 :: MIKC-type MADS-box protein%2C Flowering activator%2C Short-day/long-day promotion of flowering (Os03t0122600-01)%3BTranscription factor%2C MADS-box domain containing protein. (Os03t0122600-02)
-Os06g0164900 :: Similar to OSIGBa0147J19.7 protein. (Os06t0164900-00)

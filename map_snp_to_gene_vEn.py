@@ -12,7 +12,7 @@ def mkfolder():
         os.mkdir(folder)
         shutil.copy(args.f, folder)
         os.chdir(folder)
-    elif not os.path.exists(folder):
+    else:
         os.mkdir(folder)
         shutil.copy(args.f, folder)
         os.chdir(folder)
@@ -142,7 +142,7 @@ def condensed():
     fs.close()
 
 def knetapi():
-    """Use the genes from the condensed file to search for Knetminer genome api."""
+    '''Use the genes from the condensed file to search for Knetminer genome api.'''
     condensed="condensed_genes_designation.txt"
     with open(condensed, "r") as fs:
         with open("genome.json", "w") as fj:
@@ -169,7 +169,7 @@ def knetapi():
     return
 
 def parsejs():
-    """ deserialise json into dictionary and extract the genetable which hopefully provide right genes and score given right url"""
+    ''' deserialise json into dictionary and extract the genetable which hopefully provide right genes and score given right url'''
     with open("genome.json", "r") as fj:
         content = json.load(fj) #deserialise content of json, which will be dictionary object.
         #print(type(content))
@@ -180,7 +180,7 @@ def parsejs():
     return
 
 def knetsummary():
-    """Extract the scores only."""
+    '''Extract the scores only.'''
     with open("genetable.txt", "r") as f:
         next(f)
         with open("knet_summary.txt", "w") as fs:
@@ -205,7 +205,6 @@ def knetsummary():
 
 
 def main():
-
     mkfolder()
 
     formatcsv()
