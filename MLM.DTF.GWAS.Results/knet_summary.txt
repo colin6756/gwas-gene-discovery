@@ -1,2 +1,0 @@
-OS03G0122600	305.66	http://knetminer.rothamsted.ac.uk/riceknet/genepage?list=OS03G0122600&keyword=(coleoptile+AND+length)+OR+(mesocotyl+AND+length)+OR+(root+AND+length)+OR+(seminal+AND+root+AND+length)+OR+(Germination+AND+rate)+OR+(Seedling+AND+growth)
-OS06G0164900	8.90	http://knetminer.rothamsted.ac.uk/riceknet/genepage?list=OS06G0164900&keyword=(coleoptile+AND+length)+OR+(mesocotyl+AND+length)+OR+(root+AND+length)+OR+(seminal+AND+root+AND+length)+OR+(Germination+AND+rate)+OR+(Seedling+AND+growth)

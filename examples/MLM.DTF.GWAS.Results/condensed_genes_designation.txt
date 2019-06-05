@@ -1,5 +1,0 @@
-Os06g0166100 :: FAR1 domain containing protein. (Os06t0166100-01)
-Os06g0164900 :: Similar to OSIGBa0147J19.7 protein. (Os06t0164900-00)
-Os06g0156700 :: Lipase, GDSL domain containing protein. (Os06t0156700-01)
-Os03g0122600 :: MIKC-type MADS-box protein, Flowering time, Short-day/long-day promotion (Os03t0122600-01);Transcription factor, MADS-box domain containing protein. (Os03t0122600-02)
-Os06g0156600 :: Lipase, GDSL domain containing protein. (Os06t0156600-01)
