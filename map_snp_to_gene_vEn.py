@@ -1,6 +1,6 @@
 #!/usr/bin/python
 from __future__ import print_function
-import os, math, traceback, datetime, requests, json, argparse, shutil
+import os, math, datetime, requests, json, argparse, shutil, sys
 
 def mkfolder():
     '''Create a folder for each gapit results, copy result.csv and reference into that directory.
@@ -18,13 +18,13 @@ def mkfolder():
         os.chdir(folder)
     # end of mkfolder()
 
-def formatcsv():
+def formatcsv(formated):
     '''Extract relevant metrics e.g. chromosome, base position and p-value of SNPs into a txt.
     Condense information while adding the new metric of logP and naming SNPs based on incrementing
     integers instead of id.'''
     with open(args.f, "r") as f:
         next(f)
-        with open("Formated_results.txt", "w") as ft:
+        with open(formated, "w") as ft:
             snp = 0
             print("{}\t{}\t{}\t{}\t{}".format("SNPnum","CHR","snpBP","P","logP"), file=ft)
             for line in f:
@@ -39,14 +39,13 @@ def formatcsv():
     f.close()
     # end of formatcsv
 
-def sigsnps():
+def sigsnps(formated, filtered_snps):
     '''Filter and extract SNPs and their metrics only if they are above logP threshold specified by user.
     Also acquires the SNP effects and allele information / base change from ensembl.'''
-    formated="Formated_results.txt"
     with open(formated, "r") as ft:
         next(ft)
         logP_threshold = args.p
-        with open("filtered_snps.txt", "w") as fr:
+        with open(filtered_snps, "w") as fr:
             print("SNPnum\tCHR\tsnpBP\tP\tlogP\tSNPeff\talleleinfo", file=fr)
             for line in ft:
                 col = line.split("\t")
@@ -57,20 +56,22 @@ def sigsnps():
                 logP = float(col[4])
 
                 if logP > logP_threshold:
-                    server = "http://rest.ensemblgenomes.org"
+                    #server = "http://rest.ensemblgenomes.org"
+                    #old server is down.
+                    server = "http://rest.ensembl.org"
                     ext = "/overlap/region/oryza_sativa/{}:{}-{}:1?feature=variation".format(chr_snp,bp_snp,bp_snp)
                     r = requests.get(server+ext, headers={ "Content-Type" : "application/json"})
-                    content = r.json()
+                    decoded = r.json()
 
                     if not r.ok:
                         r.raise_for_status()
                         sys.exit()
                         print("Request has failed to get API")
 
-                    for i in content:
+                    for i in decoded:
                         if i == "\n":
                             continue
-                        data=content[0]
+                        data=decoded[0]
                         snpeffect = str(data[u'consequence_type'])
                         alleleinfo = str(data[u'alleles'])
                     print("{}\t{}\t{}\t{}\t{}\t{}\t{}".format(snp,chr_snp,bp_snp,pval,logP, snpeffect, alleleinfo), file=fr)
@@ -78,13 +79,12 @@ def sigsnps():
     ft.close()
     #end of sigsnps
 
-def summary():
+def summary(filtered_snps, disc_genes):
     '''Query on ensembl for genes ocurring within or 1000bp downstream of upstream of each significant SNPs.
     Produce a summary file of the genes as well as the phenotypes and functions linked to the genes provided by ensembl.'''
-    threshfile="filtered_snps.txt"
-    with open(threshfile, "r") as fr:
+    with open(filtered_snps, "r") as fr:
         next(fr)
-        with open("summary_genes_discovered.txt", "w") as fs:
+        with open(disc_genes, "w") as fs:
             print("GENE\tCHR\tSNPnum\tsnpBP\tP\tlogP\tSNPeff\tallele\tdesignation\tstrand", file=fs)
             for line in fr:
                 col = line.split("\t")
@@ -99,7 +99,8 @@ def summary():
                 alleleinfo = str(col[6]).replace("\n", "")
                 
                 #ASK KEYWAN WHY WE WANT TO PUT THE SNP'S POSITION INTO OUR FILE INSTEAD OF GENE BP?
-                server = "http://rest.ensemblgenomes.org"
+                #server = "http://rest.ensemblgenomes.org"
+                server = "http://rest.ensembl.org"
                 ext = "/overlap/region/oryza_sativa/{}:{}-{}:1?feature=gene".format(chrom, start, end)
 
                 r = requests.get(server+ext, headers={ "Content-Type" : "application/json"})
@@ -107,24 +108,23 @@ def summary():
                 
                 #print(r.json())
                 if len(r.json()) != 0:
-                    content=r.json()[0]
-                    gene = content[u'gene_id']
-                    description = content[u'description']
-                    sense = content[u'description']
+                    decoded=r.json()[0]
+                    gene = decoded[u'gene_id']
+                    description = decoded[u'description']
+                    sense = decoded[u'description']
 
                     print("{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}".format(gene, chrom, snpnum, position, pval, logP, snpeffect, alleleinfo, description, sense), file=fs)               
         fs.close()
     fr.close()
     #end of get genes
 
-def condensed():
+def condense_design(disc_genes, condensed):
     '''Create a more condensed file containing only genes and the functions from ensembl.
     This file will contain one instance for every unique gene isntead of the summary which may have
     the same gene printed twice if it is close to multiple SNPs'''
-    summary="summary_genes_discovered.txt"
-    with open(summary, "r") as fs:
+    with open(disc_genes, "r") as fs:
         next(fs)
-        with open("condensed_genes_designation.txt", "w") as fc:
+        with open(condensed, "w") as fc:
             geneid=[]
             annotation=[]
             for line in fs:
@@ -141,11 +141,10 @@ def condensed():
         fc.close()
     fs.close()
 
-def knetapi():
+def knetapi(condensed, api):
     '''Use the genes from the condensed file to search for Knetminer genome api.'''
-    condensed="condensed_genes_designation.txt"
     with open(condensed, "r") as fs:
-        with open("genome.json", "w") as fj:
+        with open(api, "w") as fj:
             genes = []
             for line in fs:
                 col = line.split(" :: ")
@@ -168,22 +167,22 @@ def knetapi():
     fs.close()
     return
 
-def parsejs():
+def parsejs(api, genetab):
     ''' deserialise json into dictionary and extract the genetable which hopefully provide right genes and score given right url'''
-    with open("genome.json", "r") as fj:
-        content = json.load(fj) #deserialise content of json, which will be dictionary object.
-        #print(type(content))
-        with open("genetable.txt", "w") as fg:
-            print(content[u"geneTable"], file=fg) #r.json will put a u infront of the keys of json dictionary
+    with open(api, "r") as fj:
+        decoded = json.load(fj) #deserialise decoded of json, which will be dictionary object.
+        #print(type(decoded))
+        with open(genetab, "w") as fg:
+            print(decoded[u"geneTable"], file=fg) #r.json will put a u infront of the keys of json dictionary
         fg.close()
     fj.close()
     return
 
-def knetsummary():
+def knetsummary(genetab, knet):
     '''Extract the scores only.'''
-    with open("genetable.txt", "r") as f:
+    with open(genetab, "r") as f:
         next(f)
-        with open("knet_summary.txt", "w") as fs:
+        with open(knet, "w") as fs:
             for line in f:
                 if line == "\n":
                     continue
@@ -205,21 +204,68 @@ def knetsummary():
 
 
 def main():
-    mkfolder()
+    
+    try:
+        print("Creating directory for results.")
+        mkfolder()
+    except:
+        raise
 
-    formatcsv()
+    try:
+        formated="Formated_results.txt"
+        print("writing relevant fields to {}".format(formated))
+        formatcsv(formated)
+    except:
+        raise
 
-    sigsnps()
+    try:
+        formated="Formated_results.txt"
+        filtered_snps="filtered_snps.txt"
+        print("reading from: {}".format(formated))
+        print("extracting SNPs exceeding logP threshold of {} into: {}".format(args.p, filtered_snps))
+        sigsnps(formated, filtered_snps)
+    except:
+        raise
 
-    summary()
+    try:
+        filtered_snps="filtered_snps.txt"
+        disc_genes="summary_genes_discovered.txt"
+        print("Searching for ensembl ebi for genes associated to SNPS. Producing summary file.")
+        summary(filtered_snps, disc_genes)
+    except:
+        raise
 
-    condensed()
+    try:
+        disc_genes="summary_genes_discovered.txt"
+        condensed="condensed_genes_designation.txt"
+        print("condensing down summary into one occurence for every gene discovered paired with their annotation")
+        condense_design(disc_genes, condensed)
+    except:
+        raise
 
-    knetapi()
+    try:
+        condensed="condensed_genes_designation.txt"
+        api="genome.json"
+        print("Searching with Knetminer for related genes to genes discovered from Ensembl.")
+        knetapi(condensed, api)
+    except:
+        raise
 
-    parsejs()
+    try:
+        api="genome.json"
+        genetab="genetable.txt"
+        print("obtaining genetable from Knetminer API")
+        parsejs(api, genetab)
+    except:
+        raise
 
-    knetsummary()
+    try:
+        genetab="genetable.txt"
+        knet="knet_summary.txt"
+        print("Producing summary file containing related genes found with Knetminer, their respective Knetscore and hyperlinks to network view.")
+        knetsummary(genetab, knet)
+    except:
+        raise
 
 
 if __name__ == "__main__":
