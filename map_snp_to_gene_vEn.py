@@ -35,8 +35,6 @@ def formatcsv(formated):
                 pval = float(col[3])
                 logP = -math.log10(pval)
                 print("{}\t{}\t{}\t{}\t{}".format(snp,chro,bp,pval,logP), file=ft)
-        ft.close()
-    f.close()
     # end of formatcsv
 
 def sigsnps(formated, filtered_snps):
@@ -56,8 +54,6 @@ def sigsnps(formated, filtered_snps):
                 logP = float(col[4])
 
                 if logP > logP_threshold:
-                    #server = "http://rest.ensemblgenomes.org"
-                    #old server is down.
                     server = "http://rest.ensembl.org"
                     ext = "/overlap/region/oryza_sativa/{}:{}-{}:1?feature=variation".format(chr_snp,bp_snp,bp_snp)
                     r = requests.get(server+ext, headers={ "Content-Type" : "application/json"})
@@ -75,12 +71,10 @@ def sigsnps(formated, filtered_snps):
                         snpeffect = str(data[u'consequence_type'])
                         alleleinfo = str(data[u'alleles'])
                     print("{}\t{}\t{}\t{}\t{}\t{}\t{}".format(snp,chr_snp,bp_snp,pval,logP, snpeffect, alleleinfo), file=fr)
-        fr.close()
-    ft.close()
     #end of sigsnps
 
 def summary(filtered_snps, disc_genes):
-    '''Query on ensembl for genes ocurring within or 1000bp downstream of upstream of each significant SNPs.
+    '''Query on ensembl for genes ocurring within a specified distance in bp of each significant SNPs.
     Produce a summary file of the genes as well as the phenotypes and functions linked to the genes provided by ensembl.'''
     with open(filtered_snps, "r") as fr:
         next(fr)
@@ -90,8 +84,8 @@ def summary(filtered_snps, disc_genes):
                 col = line.split("\t")
                 chrom = col[1]
                 position = int(col[2])
-                start = position - 1000
-                end = position + 1000
+                start = position - args.d
+                end = position + args.d
                 snpnum = col[0]
                 pval = col[3]
                 logP = col[4]
@@ -114,40 +108,16 @@ def summary(filtered_snps, disc_genes):
                     sense = decoded[u'description']
 
                     print("{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}".format(gene, chrom, snpnum, position, pval, logP, snpeffect, alleleinfo, description, sense), file=fs)               
-        fs.close()
-    fr.close()
     #end of get genes
 
-def condense_design(disc_genes, condensed):
-    '''Create a more condensed file containing only genes and the functions from ensembl.
-    This file will contain one instance for every unique gene isntead of the summary which may have
-    the same gene printed twice if it is close to multiple SNPs'''
+def knetapi(disc_genes, genetab):
+    '''Use the genes from the summary file to search for Knetminer genome api.'''
     with open(disc_genes, "r") as fs:
         next(fs)
-        with open(condensed, "w") as fc:
-            geneid=[]
-            annotation=[]
-            for line in fs:
-                col = line.split("\t")
-                gene = col[0]
-                designation = col[9]
-                geneid.append(gene)
-                annotation.append(str(designation).rstrip("\n"))
-            geneset = set(zip(geneid, annotation))
-            for i in geneset:
-                gen = str(i[0])
-                anno = str(i[1])
-                print("{} :: {}".format(gen, anno), file=fc)
-        fc.close()
-    fs.close()
-
-def knetapi(condensed, api):
-    '''Use the genes from the condensed file to search for Knetminer genome api.'''
-    with open(condensed, "r") as fs:
-        with open(api, "w") as fj:
+        with open(genetab, "w") as fj:
             genes = []
             for line in fs:
-                col = line.split(" :: ")
+                col = line.split("\t")
                 genes.append(col[0])
             genelist = (",").join(genes) #join all iterative elements by ,
             print(genelist)
@@ -157,26 +127,16 @@ def knetapi(condensed, api):
             link = "http://knetminer.rothamsted.ac.uk/riceknet/genome?"
             parameters = {"keyword":keyw, "list":genelist}
             r = requests.get(link, params=parameters)
-            #url = "http://knetminer.rothamsted.ac.uk/riceknet/genome?keyword={}&list={}".format(keyw, genelist)
-            #print(url)
-            #r = requests.get(url)
-            r.json()
-            r.status_code #check if request is succesfsul.
-            print(r.text, file=fj)
-        fj.close()
-    fs.close()
-    return
-
-def parsejs(api, genetab):
-    ''' deserialise json into dictionary and extract the genetable which hopefully provide right genes and score given right url'''
-    with open(api, "r") as fj:
-        decoded = json.load(fj) #deserialise decoded of json, which will be dictionary object.
-        #print(type(decoded))
-        with open(genetab, "w") as fg:
-            print(decoded[u"geneTable"], file=fg) #r.json will put a u infront of the keys of json dictionary
-        fg.close()
-    fj.close()
-    return
+            
+            #check if request is succesfsul.
+            if not r.ok:
+                r.raise_for_status()
+                sys.exit()
+            
+            #printing out genetable to a file.
+            decoded = str(r.json()[u'geneTable'])
+            print(decoded, file=fj)        
+    #end of knetapi
 
 def knetsummary(genetab, knet):
     '''Extract the scores only.'''
@@ -198,8 +158,6 @@ def knetsummary(genetab, knet):
                 r=requests.get(link)
                 print(r.url)
                 print("{}\t{}\t{}".format(genes, score, r.url), file=fs)
-        fs.close()
-    f.close()
 #End of block 7 to print genes, scores and url into scores.txt
 
 
@@ -237,25 +195,9 @@ def main():
 
     try:
         disc_genes="summary_genes_discovered.txt"
-        condensed="condensed_genes_designation.txt"
-        print("condensing down summary into one occurence for every gene discovered paired with their annotation")
-        condense_design(disc_genes, condensed)
-    except:
-        raise
-
-    try:
-        condensed="condensed_genes_designation.txt"
-        api="genome.json"
-        print("Searching with Knetminer for related genes to genes discovered from Ensembl.")
-        knetapi(condensed, api)
-    except:
-        raise
-
-    try:
-        api="genome.json"
         genetab="genetable.txt"
-        print("obtaining genetable from Knetminer API")
-        parsejs(api, genetab)
+        print("Searching with Knetminer for related genes to genes discovered from Ensembl.")
+        knetapi(disc_genes, genetab)
     except:
         raise
 
@@ -273,6 +215,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("-f", help="name of .csv output from GAPIT gwas tool")
     parser.add_argument("-p", help="integer value of logP threshold (-log10 of pvalue) for SNPs", type=int)
+    parser.add_argument("-d", help="integer value of a distance window in base pair upstream or downstream of a SNP exceeding logPthreshold.", type=int)
     args = parser.parse_args()
 
     main()
