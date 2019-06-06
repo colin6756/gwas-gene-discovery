@@ -74,13 +74,16 @@ positional arguments:
   -p P        integer value of logP threshold (-log10 of pvalue) for SNPs. Default value is 6
   -l L        a plain text file containing a list of phenotypes the genes are suspected to be causative or has strong influence on
   -d D        distance of the base-pair window around SNP for which genes are returned
+  -sp SP      species
  ```
 The usage of the script is as following
 ```
-Python map_snp_togene_vEN.py -f [spreadsheet of GWAS result] -p [logPthreshold] -d [Distance] -l [Keyword list]
+Python map_snp_togene_vEN.py -f [spreadsheet of GWAS result] -p [logPthreshold] -d [Distance] -l [Keyword list] -sp [species]
 ```
-The **mandatory argument** is a spreadsheet containing the results of GWAS analysis, the fields of spreadsheet should be arranged in the order below:
+The **mandatory argument** are:
+* A spreadsheet containing the results of GWAS analysis, the fields of spreadsheet should be arranged in the order below:
 SNP | Chromosome | Position | P.value | maf | nobs | Rsquare.of.Model.without.SNP | Rsquare.of.Model.with.SNP | FDR_Adjusted_P-values
+* species: The species of organism population of the GWAS. The taxonomy however, must be consistent with Ensembl's rest server. Please check the file specieslist.txt in the repository for correct taxonomy of species to input.
 
 The **optional arguments** are:
 * logPthreshold: -log10 of pvalue. It is used to extract SNPs with a significant statistic association to phenotype divisions in GWAS.
@@ -91,11 +94,20 @@ Germination rate
 Mesocotyl length
 
 ## Built With
-
+HTTP request for humans.
+Ensembl rest server.
+Knetminer
 ## Versioning
-
+This is the most stable and latest script. An older archived version of this script exists but takes input of genomic references of Oryza Sativa from IRRI instead of Ensembl.
 ## Authors
 William -for the sbatch script.
 ## License
-
+MIT license.
 ## Acknowledgement
+Keywan-Hassani Pak
+William
+IRRI
+GAPIT
+Ensembl
+Knetminer
+Rothamsted Resarch
