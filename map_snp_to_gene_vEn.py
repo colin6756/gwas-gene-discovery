@@ -11,51 +11,36 @@ def mkfolder():
         shutil.rmtree(folder)
         os.mkdir(folder)
         shutil.copy(args.f, folder)
+        shutil.copy(args.l, folder)
         os.chdir(folder)
     else:
         os.mkdir(folder)
         shutil.copy(args.f, folder)
+        shutil.copy(args.l, folder)
         os.chdir(folder)
     # end of mkfolder()
 
-def formatcsv(formated):
+def sigsnps(filtered_snps):
     '''Extract relevant metrics e.g. chromosome, base position and p-value of SNPs into a txt.
     Condense information while adding the new metric of logP and naming SNPs based on incrementing
     integers instead of id.'''
     with open(args.f, "r") as f:
         next(f)
-        with open(formated, "w") as ft:
+        logP_threshold = args.p
+        with open(filtered_snps, "w") as ft:
             snp = 0
             print("{}\t{}\t{}\t{}\t{}".format("SNPnum","CHR","snpBP","P","logP"), file=ft)
             for line in f:
                 snp += 1
                 col = line.split(",")
-                chro = col[1]
-                bp = col[2]
+                chro_snp = col[1]
+                bp_snp = col[2]
                 pval = float(col[3])
                 logP = -math.log10(pval)
-                print("{}\t{}\t{}\t{}\t{}".format(snp,chro,bp,pval,logP), file=ft)
-    # end of formatcsv
-
-def sigsnps(formated, filtered_snps):
-    '''Filter and extract SNPs and their metrics only if they are above logP threshold specified by user.
-    Also acquires the SNP effects and allele information / base change from ensembl.'''
-    with open(formated, "r") as ft:
-        next(ft)
-        logP_threshold = args.p
-        with open(filtered_snps, "w") as fr:
-            print("SNPnum\tCHR\tsnpBP\tP\tlogP\tSNPeff\talleleinfo", file=fr)
-            for line in ft:
-                col = line.split("\t")
-                snp = col[0]
-                chr_snp = int(col[1])
-                bp_snp = int(col[2])
-                pval = float(col[3])
-                logP = float(col[4])
 
                 if logP > logP_threshold:
                     server = "http://rest.ensembl.org"
-                    ext = "/overlap/region/oryza_sativa/{}:{}-{}:1?feature=variation".format(chr_snp,bp_snp,bp_snp)
+                    ext = "/overlap/region/oryza_sativa/{}:{}-{}:1?feature=variation".format(chro_snp,bp_snp,bp_snp)
                     r = requests.get(server+ext, headers={ "Content-Type" : "application/json"})
                     decoded = r.json()
 
@@ -70,8 +55,8 @@ def sigsnps(formated, filtered_snps):
                         data=decoded[0]
                         snpeffect = str(data[u'consequence_type'])
                         alleleinfo = str(data[u'alleles'])
-                    print("{}\t{}\t{}\t{}\t{}\t{}\t{}".format(snp,chr_snp,bp_snp,pval,logP, snpeffect, alleleinfo), file=fr)
-    #end of sigsnps
+                    print("{}\t{}\t{}\t{}\t{}\t{}\t{}".format(snp,chro_snp,bp_snp,pval,logP, snpeffect, alleleinfo), file=ft)
+    # end of formatcsv
 
 def summary(filtered_snps, disc_genes):
     '''Query on ensembl for genes ocurring within a specified distance in bp of each significant SNPs.
@@ -107,7 +92,8 @@ def summary(filtered_snps, disc_genes):
                     description = decoded[u'description']
                     sense = decoded[u'description']
 
-                    print("{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}".format(gene, chrom, snpnum, position, pval, logP, snpeffect, alleleinfo, description, sense), file=fs)               
+                    print("{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}".format(gene, chrom, snpnum, position, pval, logP, snpeffect, alleleinfo, description, sense), file=fs)
+                                   
     #end of get genes
 
 def knetapi(disc_genes, genetab):
@@ -116,26 +102,30 @@ def knetapi(disc_genes, genetab):
         next(fs)
         with open(genetab, "w") as fj:
             genes = []
-            for line in fs:
-                col = line.split("\t")
-                genes.append(col[0])
-            genelist = (",").join(genes) #join all iterative elements by ,
-            print(genelist)
-            pheno = ["coleoptile length", "mesocotyl length", "root length", "seminal root length", "Germination rate", "Seedling growth"]
-            #use str.join() to convert multiple elments in a list into one string.
-            keyw = "%20OR%20".join("({})".format(i.replace(" ", "+AND+")) for i in pheno)
-            link = "http://knetminer.rothamsted.ac.uk/riceknet/genome?"
-            parameters = {"keyword":keyw, "list":genelist}
-            r = requests.get(link, params=parameters)
-            
-            #check if request is succesfsul.
-            if not r.ok:
-                r.raise_for_status()
-                sys.exit()
-            
-            #printing out genetable to a file.
-            decoded = str(r.json()[u'geneTable'])
-            print(decoded, file=fj)        
+            with open(args.l, "r") as fl:
+                pheno = []
+                for line in fs:
+                    col = line.split("\t")
+                    genes.append(col[0])
+                genelist = (",").join(genes) #join all iterative elements by ,
+                #print(genelist)
+                for line in fl:
+                    pheno.append(line.rstrip())
+                    print(pheno)
+                #use str.join() to convert multiple elments in a list into one string.
+                keyw = "%20OR%20".join("({})".format(i.replace(" ", "+AND+")) for i in pheno)
+                link = "http://knetminer.rothamsted.ac.uk/riceknet/genome?"
+                parameters = {"keyword":keyw, "list":genelist}
+                r = requests.get(link, params=parameters)
+                
+                #check if request is succesfsul.
+                if not r.ok:
+                    r.raise_for_status()
+                    sys.exit()
+                
+                #printing out genetable to a file.
+                decoded = str(r.json()[u'geneTable'])
+                print(decoded, file=fj)        
     #end of knetapi
 
 def knetsummary(genetab, knet):
@@ -143,21 +133,25 @@ def knetsummary(genetab, knet):
     with open(genetab, "r") as f:
         next(f)
         with open(knet, "w") as fs:
-            for line in f:
-                if line == "\n":
-                    continue
-                col = line.split("\t")
-                score=str(col[6]) 
-                genes=col[1]
-                pheno = ["coleoptile length","mesocotyl length","root length","seminal root length","Germination rate", "Seedling growth"]
-                keyw = "+OR+".join("({})".format(i.replace(" ", "+AND+")) for i in pheno)
-                print(type(keyw))
-                #parameters = {"keyword":keyw, "list":genes}
-                link="http://knetminer.rothamsted.ac.uk/riceknet/genepage?list={}&keyword={}".format(genes, keyw)
-                #r=requests.get(link, params=parameters)
-                r=requests.get(link)
-                print(r.url)
-                print("{}\t{}\t{}".format(genes, score, r.url), file=fs)
+            with open(args.l, "r") as fl:
+                pheno = []
+                for line in fl:
+                    pheno.append(line.rstrip())
+                    print(pheno)
+                for line in f:
+                    if line == "\n":
+                        continue
+                    col = line.split("\t")
+                    score=str(col[6]) 
+                    genes=col[1]
+                    keyw = "+OR+".join("({})".format(i.replace(" ", "+AND+")) for i in pheno)
+                    print(type(keyw))
+                    #parameters = {"keyword":keyw, "list":genes}
+                    link="http://knetminer.rothamsted.ac.uk/riceknet/genepage?list={}&keyword={}".format(genes, keyw)
+                    #r=requests.get(link, params=parameters)
+                    r=requests.get(link)
+                    print(r.url)
+                    print("{}\t{}\t{}".format(genes, score, r.url), file=fs)
 #End of block 7 to print genes, scores and url into scores.txt
 
 
@@ -170,18 +164,10 @@ def main():
         raise
 
     try:
-        formated="Formated_results.txt"
-        print("writing relevant fields to {}".format(formated))
-        formatcsv(formated)
-    except:
-        raise
-
-    try:
-        formated="Formated_results.txt"
         filtered_snps="filtered_snps.txt"
-        print("reading from: {}".format(formated))
+        print("reading from: {}".format(args.f))
         print("extracting SNPs exceeding logP threshold of {} into: {}".format(args.p, filtered_snps))
-        sigsnps(formated, filtered_snps)
+        sigsnps(filtered_snps)
     except:
         raise
 
@@ -216,6 +202,7 @@ if __name__ == "__main__":
     parser.add_argument("-f", help="name of .csv output from GAPIT gwas tool")
     parser.add_argument("-p", help="integer value of logP threshold (-log10 of pvalue) for SNPs", type=int)
     parser.add_argument("-d", help="integer value of a distance window in base pair upstream or downstream of a SNP exceeding logPthreshold.", type=int)
+    parser.add_argument("-l", help="a plain text file containing description of phenotypes of interest line by line")
     args = parser.parse_args()
 
     main()

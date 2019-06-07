@@ -1,0 +1,3 @@
+seed width
+germination rate
+moisture
