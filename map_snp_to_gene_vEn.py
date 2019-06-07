@@ -6,16 +6,16 @@ def mkfolder():
     '''Create a folder for each gapit results, copy result.csv and reference into that directory.
     All results will then be generated within it. The main function will take the script back into parent.''' 
     print("Commenced at {}".format(datetime.datetime.now()))
-    folder=str(args.f)[6:-4]
+    folder=str(args.file)[6:-4]
     if os.path.exists(folder):
         shutil.rmtree(folder)
         os.mkdir(folder)
-        shutil.copy(args.f, folder)
+        shutil.copy(args.file, folder)
         shutil.copy(args.l, folder)
         os.chdir(folder)
     else:
         os.mkdir(folder)
-        shutil.copy(args.f, folder)
+        shutil.copy(args.file, folder)
         shutil.copy(args.l, folder)
         os.chdir(folder)
     # end of mkfolder()
@@ -24,7 +24,7 @@ def sigsnps(filtered_snps):
     '''Extract relevant metrics e.g. chromosome, base position and p-value of SNPs into a txt.
     Condense information while adding the new metric of logP and naming SNPs based on incrementing
     integers instead of id.'''
-    with open(args.f, "r") as f:
+    with open(args.file, "r") as f:
         next(f)
         logP_threshold = args.p
         with open(filtered_snps, "w") as ft:
@@ -165,7 +165,7 @@ def main():
 
     try:
         filtered_snps="filtered_snps.txt"
-        print("reading from: {}".format(args.f))
+        print("reading from: {}".format(args.file))
         print("extracting SNPs exceeding logP threshold of {} into: {}".format(args.p, filtered_snps))
         sigsnps(filtered_snps)
     except:
@@ -199,10 +199,10 @@ def main():
 if __name__ == "__main__":
     #creating parameters for the end-user.
     parser = argparse.ArgumentParser()
-    parser.add_argument("-f", help="name of .csv output from GAPIT gwas tool")
-    parser.add_argument("-p", help="integer value of logP threshold (-log10 of pvalue) for SNPs", type=int)
-    parser.add_argument("-d", help="integer value of a distance window in base pair upstream or downstream of a SNP exceeding logPthreshold.", type=int)
+    parser.add_argument("file", help="name of .csv output from GAPIT gwas tool. For specific formatting, check on ReadMe", type=str)
     parser.add_argument("-l", help="a plain text file containing description of phenotypes of interest line by line")
+    parser.add_argument("-p", default=6, help="integer value of logP threshold (-log10 of pvalue) for SNPs", type=int)
+    parser.add_argument("-d", default=1000, help="integer value of a distance window in base pair upstream or downstream of a SNP exceeding logPthreshold.", type=int)
     args = parser.parse_args()
 
     main()
