@@ -1,3 +1,2 @@
-seed width
-germination rate
-moisture
+Mesocotyl length
+Coleoptile length

@@ -11,12 +11,12 @@ def mkfolder():
         shutil.rmtree(folder)
         os.mkdir(folder)
         shutil.copy(args.file, folder)
-        shutil.copy(args.l, folder)
+        shutil.copy(args.list, folder)
         os.chdir(folder)
     else:
         os.mkdir(folder)
         shutil.copy(args.file, folder)
-        shutil.copy(args.l, folder)
+        shutil.copy(args.list, folder)
         os.chdir(folder)
     # end of mkfolder()
 
@@ -77,7 +77,7 @@ def summary(filtered_snps, disc_genes):
                 snpeffect = col[5]
                 alleleinfo = str(col[6]).replace("\n", "")
                 
-                #ASK KEYWAN WHY WE WANT TO PUT THE SNP'S POSITION INTO OUR FILE INSTEAD OF GENE BP?
+                #ASK KEYWAN WHY WE WANT TO PUT THE SNP'S POSITION INTO OUR FILE INSTEAD OF GENE BP range?
                 #server = "http://rest.ensemblgenomes.org"
                 server = "http://rest.ensembl.org"
                 ext = "/overlap/region/oryza_sativa/{}:{}-{}:1?feature=gene".format(chrom, start, end)
@@ -102,20 +102,21 @@ def knetapi(disc_genes, genetab):
         next(fs)
         with open(genetab, "w") as fj:
             genes = []
-            with open(args.l, "r") as fl:
+            with open(args.list, "r") as fl:
                 pheno = []
+                for line in fl:
+                    pheno.append(line.rstrip())
+                    print(pheno)
                 for line in fs:
                     col = line.split("\t")
                     genes.append(col[0])
                 genelist = (",").join(genes) #join all iterative elements by ,
                 #print(genelist)
-                for line in fl:
-                    pheno.append(line.rstrip())
-                    print(pheno)
+                
                 #use str.join() to convert multiple elments in a list into one string.
-                keyw = "%20OR%20".join("({})".format(i.replace(" ", "+AND+")) for i in pheno)
+                keyw1 = "%20OR%20".join("({})".format(i.replace(" ", "+AND+")) for i in pheno)
                 link = "http://knetminer.rothamsted.ac.uk/riceknet/genome?"
-                parameters = {"keyword":keyw, "list":genelist}
+                parameters = {"keyword":keyw1, "list":genelist}
                 r = requests.get(link, params=parameters)
                 
                 #check if request is succesfsul.
@@ -133,7 +134,7 @@ def knetsummary(genetab, knet):
     with open(genetab, "r") as f:
         next(f)
         with open(knet, "w") as fs:
-            with open(args.l, "r") as fl:
+            with open(args.list, "r") as fl:
                 pheno = []
                 for line in fl:
                     pheno.append(line.rstrip())
@@ -144,10 +145,8 @@ def knetsummary(genetab, knet):
                     col = line.split("\t")
                     score=str(col[6]) 
                     genes=col[1]
-                    keyw = "+OR+".join("({})".format(i.replace(" ", "+AND+")) for i in pheno)
-                    print(type(keyw))
-                    #parameters = {"keyword":keyw, "list":genes}
-                    link="http://knetminer.rothamsted.ac.uk/riceknet/genepage?list={}&keyword={}".format(genes, keyw)
+                    keyw2 = "+OR+".join("({})".format(i.replace(" ", "+AND+")) for i in pheno)
+                    link="http://knetminer.rothamsted.ac.uk/riceknet/genepage?list={}&keyword={}".format(genes, keyw2)
                     #r=requests.get(link, params=parameters)
                     r=requests.get(link)
                     print(r.url)
@@ -195,12 +194,16 @@ def main():
     except:
         raise
 
+    os.remove("genetable.txt")
+    os.remove(args.list)
+    os.remove(args.file)
+
 
 if __name__ == "__main__":
     #creating parameters for the end-user.
     parser = argparse.ArgumentParser()
     parser.add_argument("file", help="name of .csv output from GAPIT gwas tool. For specific formatting, check on ReadMe", type=str)
-    parser.add_argument("-l", help="a plain text file containing description of phenotypes of interest line by line")
+    parser.add_argument("list", help="a plain text file containing description of phenotypes of interest line by line")
     parser.add_argument("-p", default=6, help="integer value of logP threshold (-log10 of pvalue) for SNPs", type=int)
     parser.add_argument("-d", default=1000, help="integer value of a distance window in base pair upstream or downstream of a SNP exceeding logPthreshold.", type=int)
     args = parser.parse_args()
