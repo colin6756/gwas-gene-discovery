@@ -1,11 +1,11 @@
 # GWAS-gene-discovery
-Tool for discovering potential genes of interest using output from GWAS analysis software.
+Tool for discovering potential genes of interest from output of GWAS analysis software.
 
 ## Getting Started
-The instructions below provides users with a copy of this tool which can be directly used or adapted for their own project. 
-The first component of the program searches the database of Ensembl Rest Server and returns Ensembl IDs of loci positioned within a designated base-pair distance around SNPs occurences linked to one or more phenotypic traits as indicated by a Genome Wide Association Study.
+The instructions below provide users with a copy of this program which can be directly used or adapted for their own project. 
+The first component of the program searches through the databases of Ensembl Rest Server and returns Ensembl IDs of genes positioned within a designated base-pair distance around SNPs occurences statistically associated to a phenotype subjected to GWAS.
 
-The second component then input the genes into Knetminer along with any phenotypes if they are suggested by the user. This will return for each gene a hyperlink to the network visualisations of QTLs, orthologs, traits or role in biochemical pathways and publications regarding the gene, to accelerate and generate new insights for research.
+The second component then input the gene IDs into Knetminer in addition to key words which describes the phenotypes contained within a plain text file. This will return for each gene a hyperlink to the network visualisations displaying QTLs, orthologs, publications etc related to the gene therefore accelerating and generating new insights for research.
 
 ## Prerequisites
 * The script was designed for any machine able to run either python 2 or python 3. 
