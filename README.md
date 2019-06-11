@@ -1,4 +1,5 @@
 # GWAS-gene-discovery
+=======================
 Tool for discovering potential genes of interest from output of GWAS analysis software.
 
 
