@@ -12,5 +12,6 @@
 #+
 # Below here is the script itself
 #-
-module load Python/3.6.6-foss-2018b
-source /home/data/bioinf_training/colin/py3env/bin/activate
+module load <Python version>
+virtualenv <Python version>
+source <path to virtual env>/bin/activate

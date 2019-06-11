@@ -106,7 +106,7 @@ def knetapi(disc_genes, genetab):
                 pheno = []
                 for line in fl:
                     pheno.append(line.rstrip())
-                    print(pheno)
+                print("The phenotype of interests are {}".format(pheno))
                 for line in fs:
                     col = line.split("\t")
                     genes.append(col[0])
@@ -138,7 +138,6 @@ def knetsummary(genetab, knet):
                 pheno = []
                 for line in fl:
                     pheno.append(line.rstrip())
-                    print(pheno)
                 for line in f:
                     if line == "\n":
                         continue
@@ -147,7 +146,6 @@ def knetsummary(genetab, knet):
                     genes=col[1]
                     keyw2 = "+OR+".join("({})".format(i.replace(" ", "+AND+")) for i in pheno)
                     link="http://knetminer.rothamsted.ac.uk/riceknet/genepage?list={}&keyword={}".format(genes, keyw2)
-                    #r=requests.get(link, params=parameters)
                     r=requests.get(link)
                     print(r.url)
                     print("{}\t{}\t{}".format(genes, score, r.url), file=fs)
