@@ -101,7 +101,7 @@ The **mandatory arguments** are:
 * A plain text file  containing one or more brief description of the phenotype or phenotypes the GWAS is trying to return genes suspected to influence. The keywords should be vertically listed line by line. An example list, mock_keyword_list.txt can be found in this repository.
 
 The **optional arguments** are:
-* logPthreshold: -log10(p-value of SNPs). It is used to extract SNPs with a significant statistic association to phenotype divisions in GWAS from the entire spreadsheet input.
+* logPthreshold: -log10(p-value of SNPs). It is used to extract SNPs with a significant statistic association to phenotype divisions in GWAS from the entire spreadsheet input. The default value is 6 as per standard of majority of GWAS research papers.
 * Distance: The distance window upstream and downstream from a SNP exceeding loPthreshold for which genes positioned within are returned. 1kbp is the default value and this means all IDs of genes 1000bp upstream and 1000bp downstream of a SNP will be returned.
 
 By this point, if the User has either a standard or Easybuild terminal set up with requests installed, they may wish to run the following commands. This will reproduce the directories: /MLM.blupWidth.GWAS.Results and /MLM.DTF.GWAS.Results which are examples outputs produced with all optional parameters set to default.
