@@ -1,5 +1,4 @@
 # GWAS-gene-discovery
-=======================
 Tool for discovering potential genes of interest from output of GWAS analysis software.
 
 
@@ -29,10 +28,10 @@ The second component then input the gene IDs into Knetminer in addition to key w
 ## Tutorial and usage instructions
 This is a quick tutorial to get the user started by reproducing the outputs of map_snp_to_gene_vEN.py for 2 different GWAS output spreadsheets, GAPIT.MLM.DTF.GWAS.Results.csv and GAPIT.MLM.blupWidth.GWAS.Results.csv as seen in the 2 directories of the same names.
 
-### 1.Downloading the repository
+#### 1.Downloading the repository
 Clone this repository with the GitHub URL using either Git or a Git GUI. The user should obtain a directroy named gwas-gene-discovery with all the contents of the Github repository present.
 
-### 2. Accessing compute node of Rothhpc4 Server managed by Easybuild
+#### 2. Accessing compute node of Rothhpc4 Server managed by Easybuild
 The tutorial generally assume the user has access to Rothamsted Research facility's Rothhpc4 cluster. If such is the case, requests is already installed onto standard compute nodes which can be accessed as shown below. For machines without access to Rothamsted's HPC clusters, read optional step 3.
 
 The user can check available compute nodes by the command:
@@ -44,7 +43,7 @@ If available, login to a standard compute node on Rothhpc4 using:
 srun --pty bash -i
 ```
 
-### 3.OPTIONAL: Setting up a virtual environment on Rothhpc4 HPC cluster or standard Linux Terminal
+#### 3.OPTIONAL: Setting up a virtual environment on Rothhpc4 HPC cluster or standard Linux Terminal
 
 ###### Alternate Easybuild HPC clusters
 A virtual environment is not a prerequisite for Rothhpc4 users as Requests is pre-installed in path. However, for other machines with EasyBuild frameworks outside of Rothamsted Research, the user should set up a virtual environment and install requests by following instructions below.
@@ -78,13 +77,13 @@ The user may access the virtual environment in another session by:
 source <path to virtual environment>/bin/activate
 ```
   
-### 4.Installing requests
+#### 4.Installing requests
 Requests is needed for the steps that send HTTP request protocols found in the script. The following commands can install request either within or outside a virtual environment:
 ```
 pip install requests
 ```
 
-### 5.Input data and execution
+#### 5.Input data and execution
 ```
 map_snp_to_gene_vEn.py -h
 ```
@@ -114,7 +113,7 @@ python map_snp_to_gene_vEn.py GAPIT.MLM.DTF.GWAS.Results.csv mock_keyword_list.t
 python map_snp_to_gene_vEn.py GAPIT.MLM.DTF.GWAS.Results.csv mock_keyword_list.txt
 ```
 
-### 6. Output information
+#### 6. Output information
 Inspect directories /MLM.blupWidth.GWAS.Results and /MLM.DTF.GWAS.Results, the tool has produced a single output directory for each input. Within each directory, 3 files can be found:
 * filtered_snps.txt. This lists all the significant SNPs incrementally from 1 onwards. e.g. SNPnum 36524 means the 36524th SNP found in the input CSV spreadsheet is statistically associated to the trait subjected to GWAS.
 * summary_genes_discovered.txt. This contains the significant SNPs and the geneIDs found within the defined or default distance upstream and downstream of them. Additional information such as snp effects are included.
