@@ -1,7 +1,7 @@
 # GWAS-gene-discovery
 Tool for discovering potential genes of interest from output of GWAS analysis software.
 
-## Introduction
+## Overview
 The instructions below provide users with a copy of this program which can be directly used or adapted for their own project. 
 The first component of the program searches through the databases of Ensembl Rest Server and returns Ensembl IDs of genes positioned within a designated base-pair distance around SNPs occurences in GWAS that are statistically associated to a phenotype.
 
