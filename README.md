@@ -16,14 +16,12 @@ The second component then input the gene IDs into Knetminer in addition to key w
 
 ## Instructions
 #### 1.Downloading the repository
-Clone this repository by clicking on "Clone or download" button, copy the URL and either input it into a Github GUI program or if git is installed in bash terminal execute the following. The user should find a copied directory named gwas-gene-discoveryV2 with all the contents of the Github repository:
-```
-git clone https://github.com/Citrolius/gwas-gene-discoveryV2.git
-```
+Clone this repository with the GitHub URL using either Git or a Git GUI. The user should obtain a directroy named gwas-gene-discovery with all the contents of the Github repository present.
 
 #### 2.Setting up a virtual environment on Rothhpc4 HPC cluster
-This section assumes the user has access to Rothamsted Research facility's Rothhpc4 cluster or a computer running Linux with Easybuild framework.
-A login node is accessed by the User after logging into the server. The user should execute the following to check available compute nodes:
+This section assumes the user has access to Rothamsted Research facility's Rothhpc4 cluster or a computer accessing a Linux server with Easybuild framework.
+
+A login node is accessed by the User after logging into their personal account. The user should execute the following to check available compute nodes:
 ```
 sinfo 
 ```
