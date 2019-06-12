@@ -29,7 +29,7 @@ The second component then input the gene IDs into Knetminer in addition to key w
 This is a quick tutorial to get the user started by reproducing the outputs of map_snp_to_gene_vEN.py for 2 different GWAS output spreadsheets, GAPIT.MLM.DTF.GWAS.Results.csv and GAPIT.MLM.blupWidth.GWAS.Results.csv as seen in the 2 directories of the same names.
 
 #### 1.Downloading the repository
-Clone this repository with the GitHub URL using either Git or a Git GUI. The user should obtain a directroy named gwas-gene-discovery with all the contents of the Github repository present.
+Clone this repository with the GitHub URL using either Git or a Git GUI. The user should obtain a directory named gwas-gene-discovery with all the contents of the Github repository present.
 
 #### 2. Accessing compute node of Rothhpc4 Server managed by Easybuild
 The tutorial generally assume the user has access to Rothamsted Research facility's Rothhpc4 cluster. If such is the case, requests is already installed onto standard compute nodes which can be accessed as shown below. For machines without access to Rothamsted's HPC clusters, read optional step 3.
