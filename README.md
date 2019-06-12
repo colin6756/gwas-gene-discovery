@@ -83,8 +83,7 @@ map_snp_to_gene_vEn.py [-h] [-p P] [-d D] file list
 The **mandatory arguments** are:
 * File. A spreadsheet containing the results of GWAS analysis. The fields of spreadsheet should be arranged in the order below as the script was originally designed for GAPIT software outputs (examples being 2 csv files in repository).:
 
-  SNP | Chromosome | Position | P.value | maf | nobs | Rsquare.of.Model.without.SNP | Rsquare.of.Model.with.SNP | FDR_Adjusted_P-values
-
+SNP [integer], Chromosome [integer], Position [integer], P.value [float]
 
 * A plain text file containing one or more short description of the phenotype or phenotypes genes of interest are suspected to influence. The keywords should be vertically listed line by line. An example list, mock_keyword_list.txt can be found in the repository.
 
