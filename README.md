@@ -16,7 +16,7 @@ The second component then input the gene IDs into Knetminer in addition to key w
 ## Prerequisites
 * The script can run on any machine able to access linux terminal with either python 2 or python 3. 
 
-* The program does not require heavy computational resources. However, as the user may prefer high performance computing the instructions on how to set up and run the program on Rothhpc4 server at Rothamsted Research managed by the Easybuild framework bas been included below. The User should read the instructions for any other HPC frameworks.
+* The program does not require heavy computational resources. However, as the user may prefer high performance computing the instructions on how to set up and run the program on Rothhpc4 server at Rothamsted Research managed by the Easybuild framework bas been included below. The User should read instructions specific to any other HPC frameworks.
 
 * In addition to either Python version, the user should ensure they have installed Requests module into Python path. See 3. Installing requests in Instructions on how to do this.
 
