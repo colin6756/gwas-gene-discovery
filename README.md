@@ -65,7 +65,7 @@ module load <Python version>
 source </path to env>/bin/activate/
 ```
   
-#### 4.Installing requests
+#### 4.Installing python request library
 Requests is needed for the steps that send HTTP request protocols found in the script. The following commands can install requests either within or outside a virtual environment:
 ```
 pip install requests
