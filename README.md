@@ -86,7 +86,7 @@ pip install requests
 #### 5.Execution of script
 The command:
 ```
-map_snp_to_gene_vEn.py -h
+python map_snp_to_gene_vEn.py -h
 ```
 Returns the usage of the script as the following:
 ```
