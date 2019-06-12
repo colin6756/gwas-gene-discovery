@@ -26,13 +26,17 @@ The second component then input the gene IDs into Knetminer in addition to key w
 
 
 ## Tutorial and usage instructions
-This is a quick tutorial to get the user started by reproducing the outputs of map_snp_to_gene_vEN.py for 2 different GWAS output spreadsheets, GAPIT.MLM.DTF.GWAS.Results.csv and GAPIT.MLM.blupWidth.GWAS.Results.csv as seen in the 2 directories of the same names.
+This is a quick tutorial to get the user started by reproducing the outputs of map_snp_to_gene_vEN.py for 2 different GWAS output spreadsheets, GAPIT.MLM.DTF.GWAS.Results.csv and GAPIT.MLM.blupWidth.GWAS.Results.csv as seen in the 2 directories of the same names. The tutorial generally assume the user has access to Rothamsted Research facility's Rothhpc4 cluster.
 
 #### 1.Downloading the repository
+<<<<<<< HEAD
+Clone this repository with the GitHub URL using either Git or a Git GUI. The user should obtain a directroy named gwas-gene-discovery containing identical contents to the GitHub repository.
+=======
 Clone this repository with the GitHub URL using either Git or a Git GUI. The user should obtain a directory named gwas-gene-discovery with all the contents of the Github repository present.
+>>>>>>> c4327f3a3dc2076636df62f51b053ae668ae9837
 
 #### 2. Accessing compute node of Rothhpc4 Server managed by Easybuild
-The tutorial generally assume the user has access to Rothamsted Research facility's Rothhpc4 cluster. If such is the case, requests is already installed onto standard compute nodes which can be accessed as shown below. For machines without access to Rothamsted's HPC clusters, read optional step 3.
+ Requests is already installed onto standard compute nodes of Rothhpc4 server which can be logged in as shown below. For machines without access to Rothamsted's HPC clusters, read **standard linux terminals** in step 3.
 
 The user can check available compute nodes by the command:
 ```
@@ -45,27 +49,27 @@ srun --pty bash -i
 
 #### 3.OPTIONAL: Setting up a virtual environment on Rothhpc4 HPC cluster or standard Linux Terminal
 
-###### Alternate Easybuild HPC clusters
-A virtual environment is not a prerequisite for Rothhpc4 users as Requests is pre-installed in path. However, for other machines with EasyBuild frameworks outside of Rothamsted Research, the user should set up a virtual environment and install requests by following instructions below.
+###### Virtual environment on Rothhpc4 with Easybuild
+A virtual environment is not compulsory for Rothhpc4 users as Requests is pre-installed in Python path on compute nodes. However, for other machines with EasyBuild frameworks outside of Rothamsted Research, the user should set up a virtual environment and install requests by following instructions below.
 
 Check all the available versions of python currently on cluster:
 ```
 module avail Python
 ```
-Afer a Python2 or Python3 version has been selected the user can either edit the sbatch script in this repository, virtualenv_setup.sbatch or execute the commands below.
+Afer a Python2 or Python3 version has been selected either edit the sbatch script in this repository, virtualenv_setup.sbatch or execute the commands below.
 
 ```
 module load <Python version>
 virtualenv <name of Python virtual environment>
 source </path to env>/bin/activate/
 ```
-The user may access the virtual environment in another session with:
+The user can return to the virtual environment in another session with:
 ```
 module load <Python version>
 source </path to env>/bin/activate/
 ```
-###### Standard linux terminal
-If the User is on a standard linux terminal, virtualenv for python2 and/or pyvenv must have been installed previous.
+###### Virtual environment in standard linux terminal
+If the User is on a standard linux terminal, virtualenv for python2 and/or pyvenv must be installed previously.
 Set up virtual environment by:
 ```
 virtualenv <Python virtual environment name>
@@ -78,33 +82,33 @@ source <path to virtual environment>/bin/activate
 ```
   
 #### 4.Installing requests
-Requests is needed for the steps that send HTTP request protocols found in the script. The following commands can install request either within or outside a virtual environment:
+Requests is needed for the steps that send HTTP request protocols found in the script. The following commands can install requests either within or outside a virtual environment:
 ```
 pip install requests
 ```
 
-#### 5.Input data and execution
+#### 5.Execution of script
+The command:
 ```
 map_snp_to_gene_vEn.py -h
 ```
-
-Displays the usage of the script as the following:
+Returns the usage of the script as the following:
 ```
 map_snp_to_gene_vEn.py [-h] [-p P] [-d D] file list
 ```
 The **mandatory arguments** are:
-* File. A spreadsheet containing the results of GWAS analysis. The fields of spreadsheet should be arranged in the order below as it the tool was designed for GWAS results from GAPIT software (inspect either csv spreadsheets in repository):
+* File. A spreadsheet containing the results of GWAS analysis. The fields of spreadsheet should be arranged in the order below as the script was originally designed for GAPIT software outputs (examples being 2 csv files in repository).:
 
   SNP | Chromosome | Position | P.value | maf | nobs | Rsquare.of.Model.without.SNP | Rsquare.of.Model.with.SNP | FDR_Adjusted_P-values
 
 
-* A plain text file  containing one or more brief description of the phenotype or phenotypes the GWAS is trying to return genes suspected to influence. The keywords should be vertically listed line by line. An example list, mock_keyword_list.txt can be found in this repository.
+* A plain text file containing one or more short description of the phenotype or phenotypes genes of interest are suspected to influence. The keywords should be vertically listed line by line. An example list, mock_keyword_list.txt can be found in the repository.
 
 The **optional arguments** are:
-* logPthreshold: -log10(p-value of SNPs). It is used to extract SNPs with a significant statistic association to phenotype divisions in GWAS from the entire spreadsheet input. The default value is 6 as per standard of majority of GWAS research papers.
-* Distance: The distance window upstream and downstream from a SNP exceeding loPthreshold for which genes positioned within are returned. 1kbp is the default value and this means all IDs of genes 1000bp upstream and 1000bp downstream of a SNP will be returned.
+* logPthreshold: -log10(p-value of SNPs). It is used to extract SNPs strongly associated to phenotypes of interest as indicated by the association test of GWAS. The default value is 6 as per standard of majority of GWAS research papers.
+* Distance: The distance in base-pairs upstream and downstream from a SNP exceeding loPthreshold. All genes positioned within this genomic length are returned. 1kbp is the default value and this means a SNP occurence is upstream, downstream or within gene or genes located in this 1kbp region.
 
-By this point, if the User has either a standard or Easybuild terminal set up with requests installed, they may wish to run the following commands. This will reproduce the directories: /MLM.blupWidth.GWAS.Results and /MLM.DTF.GWAS.Results which are examples outputs produced with all optional parameters set to default.
+If the User has either a standard or Easybuild terminal set up with requests installed, they can run the following commands. This will reproduce the directories: /MLM.blupWidth.GWAS.Results and /MLM.DTF.GWAS.Results which are example outputs produced with all optional parameters set to default for the 2 case study spreadsheets in repository.
 
 ```
 python map_snp_to_gene_vEn.py GAPIT.MLM.DTF.GWAS.Results.csv mock_keyword_list.txt
@@ -114,9 +118,9 @@ python map_snp_to_gene_vEn.py GAPIT.MLM.DTF.GWAS.Results.csv mock_keyword_list.t
 ```
 
 #### 6. Output information
-Inspect directories /MLM.blupWidth.GWAS.Results and /MLM.DTF.GWAS.Results, the tool has produced a single output directory for each input. Within each directory, 3 files can be found:
-* filtered_snps.txt. This lists all the significant SNPs incrementally from 1 onwards. e.g. SNPnum 36524 means the 36524th SNP found in the input CSV spreadsheet is statistically associated to the trait subjected to GWAS.
-* summary_genes_discovered.txt. This contains the significant SNPs and the geneIDs found within the defined or default distance upstream and downstream of them. Additional information such as snp effects are included.
+Inspect directories /MLM.blupWidth.GWAS.Results and /MLM.DTF.GWAS.Results. The script has produced a directory of the same name for each input spreadhseet. Within each directory, 3 files can be found:
+* filtered_snps.txt. This lists all the significant SNPs incrementally named from 1. Use the row number in spreadsheet to track the exact SNP ID. e.g. In /MLM.blupWidth.GWAS.Results, SNPnum 36524 in filtered_snps.txt is the 36524th SNP found in the input CSV spreadsheet, its ID is 23974957.
+* summary_genes_discovered.txt. This contains the significant SNPs and the geneIDs found within the user-defined or default distance around the SNP. Additional information such as snp effects are included.
 * knet_summary.txt. This file contains for each geneID from summary_genes_discovered, the URL link to Knetminer's network view showing orthologous relationships, traits, publications etc with a KnetScore ranking predicted relevance to traits in keyword list.
 
 
