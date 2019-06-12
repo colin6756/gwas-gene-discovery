@@ -64,18 +64,6 @@ The user can return to the virtual environment in another session with:
 module load <Python version>
 source </path to env>/bin/activate/
 ```
-###### Virtual environment in standard linux terminal
-If the User is on a standard linux terminal, virtualenv for python2 and/or pyvenv must be installed previously.
-Set up virtual environment by:
-```
-virtualenv <Python virtual environment name>
-export PYTHONPATH="/home/apps/python/lib64/<python version>/site-manager"
-source <path to virtual environment>/bin/activate
-```
-The user may access the virtual environment in another session by:
-```
-source <path to virtual environment>/bin/activate
-```
   
 #### 4.Installing requests
 Requests is needed for the steps that send HTTP request protocols found in the script. The following commands can install requests either within or outside a virtual environment:
