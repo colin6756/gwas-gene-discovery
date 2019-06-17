@@ -123,21 +123,15 @@ This is the most stable and latest script. An older archived version of this scr
 
 
 ## Authors
-TBC
-
+Keywan-Hassani Pak
+Colin Li
 
 ## License
 MIT license.
 
 
-
-
 ## Acknowledgement
-Keywan-Hassani Pak
-William
-IRRI
-GAPIT
 Ensembl
 Knetminer
 Rothamsted Resarch
-TBC
+
