@@ -1,2 +1,3 @@
-Mesocotyl length
+Germination
 Coleoptile length
+Mesocotyl length

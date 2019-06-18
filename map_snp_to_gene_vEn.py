@@ -37,10 +37,16 @@ def sigsnps(filtered_snps):
                 bp_snp = col[2]
                 pval = float(col[3])
                 logP = -math.log10(pval)
+                if args.species == 1:
+                    species="oryza_sativa"
+                elif args.species == 2:
+                    species="triticum_aestivum"
+                elif args.species == 3:
+                    species="arabidopsis_thaliana"
 
                 if logP > logP_threshold:
                     server = "http://rest.ensembl.org"
-                    ext = "/overlap/region/oryza_sativa/{}:{}-{}:1?feature=variation".format(chro_snp,bp_snp,bp_snp)
+                    ext = "/overlap/region/{}/{}:{}-{}:1?feature=variation".format(species, chro_snp,bp_snp,bp_snp)
                     r = requests.get(server+ext, headers={ "Content-Type" : "application/json"})
                     decoded = r.json()
 
@@ -76,11 +82,17 @@ def summary(filtered_snps, disc_genes):
                 logP = col[4]
                 snpeffect = col[5]
                 alleleinfo = str(col[6]).replace("\n", "")
+                if args.species == 1:
+                    species="oryza_sativa"
+                elif args.species == 2:
+                    species="triticum_aestivum"
+                elif args.species == 3:
+                    species="arabidopsis_thaliana"
                 
                 #ASK KEYWAN WHY WE WANT TO PUT THE SNP'S POSITION INTO OUR FILE INSTEAD OF GENE BP range?
                 #server = "http://rest.ensemblgenomes.org"
                 server = "http://rest.ensembl.org"
-                ext = "/overlap/region/oryza_sativa/{}:{}-{}:1?feature=gene".format(chrom, start, end)
+                ext = "/overlap/region/{}/{}:{}-{}:1?feature=gene".format(species, chrom, start, end)
 
                 r = requests.get(server+ext, headers={ "Content-Type" : "application/json"})
                 
@@ -115,7 +127,13 @@ def knetapi(disc_genes, genetab):
                 
                 #use str.join() to convert multiple elments in a list into one string.
                 keyw1 = "%20OR%20".join("({})".format(i.replace(" ", "+AND+")) for i in pheno)
-                link = "http://knetminer.rothamsted.ac.uk/riceknet/genome?"
+                if args.species == 1:
+                    species="riceknet"
+                elif args.species == 2:
+                    species="wheatknet"
+                elif args.species == 3:
+                    species="araknet"
+                link="http://knetminer.rothamsted.ac.uk/{}/genome?".format(species)
                 parameters = {"keyword":keyw1, "list":genelist}
                 r = requests.get(link, params=parameters)
                 
@@ -145,7 +163,13 @@ def knetsummary(genetab, knet):
                     score=str(col[6]) 
                     genes=col[1]
                     keyw2 = "+OR+".join("({})".format(i.replace(" ", "+AND+")) for i in pheno)
-                    link="http://knetminer.rothamsted.ac.uk/riceknet/genepage?list={}&keyword={}".format(genes, keyw2)
+                    if args.species == 1:
+                        species="riceknet"
+                    elif args.species == 2:
+                        species="wheatknet"
+                    elif args.species == 3:
+                        species="araknet"
+                    link="http://knetminer.rothamsted.ac.uk/{}/genepage?list={}&keyword={}".format(species, genes, keyw2)
                     r=requests.get(link)
                     print(r.url)
                     print("{}\t{}\t{}".format(genes, score, r.url), file=fs)
@@ -202,6 +226,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("file", help="name of .csv output from GAPIT gwas tool. For specific formatting, check on ReadMe", type=str)
     parser.add_argument("list", help="a plain text file containing description of phenotypes of interest line by line")
+    parser.add_argument("species", help="Choose an integer out of three to select the species of organism subjected to gwas. 1 being rice, 2 being wheat and 3 being arabidopsis", type=int)
     parser.add_argument("-p", default=6, help="integer value of logP threshold (-log10 of pvalue) for SNPs", type=int)
     parser.add_argument("-d", default=1000, help="integer value of a distance window in base pair upstream or downstream of a SNP exceeding logPthreshold.", type=int)
     args = parser.parse_args()
