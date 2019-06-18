@@ -90,9 +90,9 @@ SNP [integer], Chromosome [integer], Position [integer], P.value [float]
 * Species. The species of organism subjected to gwas which the script will return gene IDs specific to. The options are currently 3 species represented by an integer value as shown below:
 
 
-        * 1 represents rice
-        * 2 represents wheat
-        * 3 represents arabidopsis
+     * 1 represents rice
+     * 2 represents wheat
+     * 3 represents arabidopsis
 
 
 The **optional arguments** are:
