@@ -1,4 +1,4 @@
-GENE	CHR	SNPnum	snpBP	P	logP	SNPeff	allele	designation	strand
+GENE	CHROMOSOME	SNP_number	SNP_Base_Position	p-value	logP	SNP_effect	allele_info	Gene_description	strand
 Os01g0607900	1	36547	23977924	1.85915199348e-07	6.73068510338	intron_variant	[u'T', u'C']	None	None
 Os01g0607900	1	36553	23978792	7.9152473963e-07	6.10153550643	intron_variant	[u'A', u'G']	None	None
 Os11g0526200	11	172992	19095542	1.97593457887e-07	6.70422743855	downstream_gene_variant	[u'A', u'C']	None	None

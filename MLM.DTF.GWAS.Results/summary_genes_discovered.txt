@@ -1,4 +1,4 @@
-GENE	CHR	SNPnum	snpBP	P	logP	SNPeff	allele	designation	strand
+GENE	CHROMOSOME	SNP_number	SNP_Base_Position	p-value	logP	SNP_effect	allele_info	Gene_description	strand
 Os03g0122600	3	1	1278045	8.74e-09	8.05848856737	intron_variant	[u'G', u'A']	None	None
 Os03g0122600	3	2	1283193	2.14e-08	7.66958622665	intron_variant	[u'C', u'T']	None	None
 Os03g0122600	3	3	1275151	2.98e-08	7.52578373592	intron_variant	[u'T', u'C']	None	None

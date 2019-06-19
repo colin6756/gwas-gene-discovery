@@ -70,7 +70,7 @@ def summary(filtered_snps, disc_genes):
     with open(filtered_snps, "r") as fr:
         next(fr)
         with open(disc_genes, "w") as fs:
-            print("GENE\tCHR\tSNPnum\tsnpBP\tP\tlogP\tSNPeff\tallele\tdesignation\tstrand", file=fs)
+            print("GENE\tCHROMOSOME\tSNP_number\tSNP_Base_Position\tp-value\tlogP\tSNP_effect\tallele_info\tGene_description\tstrand", file=fs)
             for line in fr:
                 col = line.split("\t")
                 chrom = col[1]
