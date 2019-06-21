@@ -1,6 +1,8 @@
 #!/usr/bin/python
 from __future__ import print_function
 import os, math, datetime, requests, json, argparse, shutil, sys
+#import pandas as pd
+#import numpy as pd
 
 def mkfolder():
     '''Create a folder for each gapit results, copy result.csv and reference into that directory.
@@ -26,7 +28,7 @@ def sigsnps(filtered_snps):
     integers instead of id.'''
     with open(args.file, "r") as f:
         next(f)
-        logP_threshold = args.p
+        logP_threshold = args.logP
         with open(filtered_snps, "w") as ft:
             snp = 0
             print("{}\t{}\t{}\t{}\t{}".format("SNPnum","CHR","snpBP","P","logP"), file=ft)
@@ -70,13 +72,13 @@ def summary(filtered_snps, disc_genes):
     with open(filtered_snps, "r") as fr:
         next(fr)
         with open(disc_genes, "w") as fs:
-            print("GENE\tCHROMOSOME\tSNP_number\tSNP_Base_Position\tp-value\tlogP\tSNP_effect\tallele_info\tGene_description\tstrand", file=fs)
+            print("GENE\tSNP_CHROMOSOME\tSNP_number\tSNP_Base_Position\tp-value\tlogP\tSNP_effect\tallele_info\tGene_description", file=fs)
             for line in fr:
                 col = line.split("\t")
                 chrom = col[1]
                 position = int(col[2])
-                start = position - args.d
-                end = position + args.d
+                start = position - args.distance
+                end = position + args.distance
                 snpnum = col[0]
                 pval = col[3]
                 logP = col[4]
@@ -89,8 +91,6 @@ def summary(filtered_snps, disc_genes):
                 elif args.species == 3:
                     species="arabidopsis_thaliana"
                 
-                #ASK KEYWAN WHY WE WANT TO PUT THE SNP'S POSITION INTO OUR FILE INSTEAD OF GENE BP range?
-                #server = "http://rest.ensemblgenomes.org"
                 server = "http://rest.ensembl.org"
                 ext = "/overlap/region/{}/{}:{}-{}:1?feature=gene".format(species, chrom, start, end)
 
@@ -104,7 +104,7 @@ def summary(filtered_snps, disc_genes):
                     description = decoded[u'description']
                     sense = decoded[u'description']
 
-                    print("{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}".format(gene, chrom, snpnum, position, pval, logP, snpeffect, alleleinfo, description, sense), file=fs)
+                    print("{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}".format(gene, chrom, snpnum, position, pval, logP, snpeffect, alleleinfo, description), file=fs)
                                    
     #end of get genes
 
@@ -144,7 +144,7 @@ def knetapi(disc_genes, genetab):
                 
                 #printing out genetable to a file.
                 decoded = str(r.json()[u'geneTable'])
-                print(decoded, file=fj)        
+                print(decoded, file=fj)
     #end of knetapi
 
 def knetsummary(genetab, knet):
@@ -187,7 +187,7 @@ def main():
     try:
         filtered_snps="filtered_snps.txt"
         print("reading from: {}".format(args.file))
-        print("extracting SNPs exceeding logP threshold of {} into: {}".format(args.p, filtered_snps))
+        print("extracting SNPs exceeding logP threshold of {} into: {}".format(args.logP, filtered_snps))
         sigsnps(filtered_snps)
     except:
         raise
@@ -227,8 +227,8 @@ if __name__ == "__main__":
     parser.add_argument("file", help="name of .csv output from GAPIT gwas tool. For specific formatting, check on ReadMe", type=str)
     parser.add_argument("list", help="a plain text file containing description of phenotypes of interest line by line")
     parser.add_argument("species", help="Choose an integer out of three to select the species of organism subjected to gwas. 1 being rice, 2 being wheat and 3 being arabidopsis", type=int)
-    parser.add_argument("-p", default=6, help="integer value of logP threshold (-log10 of pvalue) for SNPs", type=int)
-    parser.add_argument("-d", default=1000, help="integer value of a distance window in base pair upstream or downstream of a SNP exceeding logPthreshold.", type=int)
+    parser.add_argument("--logP", default=6, help="integer value of logP threshold (-log10 of pvalue) for SNPs", type=int)
+    parser.add_argument("--distance", default=1000, help="integer value of a distance window in base pair upstream or downstream of a SNP exceeding logPthreshold.", type=int)
     args = parser.parse_args()
 
     main()

@@ -1,11 +1,11 @@
-GENE	CHROMOSOME	SNP_number	SNP_Base_Position	p-value	logP	SNP_effect	allele_info	Gene_description	strand
-Os03g0122600	3	1	1278045	8.74e-09	8.05848856737	intron_variant	[u'G', u'A']	None	None
-Os03g0122600	3	2	1283193	2.14e-08	7.66958622665	intron_variant	[u'C', u'T']	None	None
-Os03g0122600	3	3	1275151	2.98e-08	7.52578373592	intron_variant	[u'T', u'C']	None	None
-Os03g0122600	3	4	1286390	4.79e-08	7.31966448659	intron_variant	[u'G', u'A']	None	None
-Os03g0122600	3	5	1300254	5.04e-08	7.29756946355	5_prime_UTR_variant	[u'C', u'T']	None	None
-Os06g0164900	6	6	3287871	5.29e-08	7.27654432796	missense_variant	[u'A', u'T']	None	None
-Os03g0122600	3	7	1272815	7.36e-08	7.13312218566	intron_variant	[u'G', u'A']	None	None
-Os06g0166100	6	8	3326064	1.02e-07	6.99139982824	synonymous_variant	[u'T', u'A']	None	None
-Os06g0156700	6	11	2898059	3.07e-07	6.51286162452	upstream_gene_variant	[u'A', u'G']	None	None
-Os06g0156600	6	13	2894959	6.85e-07	6.16430942851	intron_variant	[u'T', u'C']	None	None
+GENE	SNP_CHROMOSOME	SNP_number	SNP_Base_Position	p-value	logP	SNP_effect	allele_info	Gene_description	SCORE	network_view
+Os03g0122600	3	1	1278045	8.740000000000001e-09	8.058488567365597	intron_variant	['G', 'A']	None	125.60	https://knetminer.rothamsted.ac.uk/riceknet/genepage?list=Os03g0122600&keyword=(Germination)+OR+(Coleoptile+AND+length)+OR+(Mesocotyl+AND+length)
+Os03g0122600	3	2	1283193	2.14e-08	7.669586226650809	intron_variant	['C', 'T']	None	125.60	https://knetminer.rothamsted.ac.uk/riceknet/genepage?list=Os03g0122600&keyword=(Germination)+OR+(Coleoptile+AND+length)+OR+(Mesocotyl+AND+length)
+Os03g0122600	3	3	1275151	2.98e-08	7.525783735923746	intron_variant	['T', 'C']	None	125.60	https://knetminer.rothamsted.ac.uk/riceknet/genepage?list=Os03g0122600&keyword=(Germination)+OR+(Coleoptile+AND+length)+OR+(Mesocotyl+AND+length)
+Os03g0122600	3	4	1286390	4.79e-08	7.319664486585437	intron_variant	['G', 'A']	None	125.60	https://knetminer.rothamsted.ac.uk/riceknet/genepage?list=Os03g0122600&keyword=(Germination)+OR+(Coleoptile+AND+length)+OR+(Mesocotyl+AND+length)
+Os03g0122600	3	5	1300254	5.04e-08	7.297569463554474	5_prime_UTR_variant	['C', 'T']	None	125.60	https://knetminer.rothamsted.ac.uk/riceknet/genepage?list=Os03g0122600&keyword=(Germination)+OR+(Coleoptile+AND+length)+OR+(Mesocotyl+AND+length)
+Os06g0164900	6	6	3287871	5.29e-08	7.276544327964814	missense_variant	['A', 'T']	None	5.94	https://knetminer.rothamsted.ac.uk/riceknet/genepage?list=Os06g0164900&keyword=(Germination)+OR+(Coleoptile+AND+length)+OR+(Mesocotyl+AND+length)
+Os03g0122600	3	7	1272815	7.36e-08	7.133122185662503	intron_variant	['G', 'A']	None	125.60	https://knetminer.rothamsted.ac.uk/riceknet/genepage?list=Os03g0122600&keyword=(Germination)+OR+(Coleoptile+AND+length)+OR+(Mesocotyl+AND+length)
+Os06g0166100	6	8	3326064	1.0199999999999999e-07	6.991399828238082	synonymous_variant	['T', 'A']	None	0.00	https://knetminer.rothamsted.ac.uk/riceknet/genepage?list=Os06g0166100&keyword=(Germination)+OR+(Coleoptile+AND+length)+OR+(Mesocotyl+AND+length)
+Os06g0156700	6	11	2898059	3.07e-07	6.512861624522814	upstream_gene_variant	['A', 'G']	None	10.64	https://knetminer.rothamsted.ac.uk/riceknet/genepage?list=Os06g0156700&keyword=(Germination)+OR+(Coleoptile+AND+length)+OR+(Mesocotyl+AND+length)
+Os06g0156600	6	13	2894959	6.85e-07	6.164309428507575	intron_variant	['T', 'C']	None	10.64	https://knetminer.rothamsted.ac.uk/riceknet/genepage?list=Os06g0156600&keyword=(Germination)+OR+(Coleoptile+AND+length)+OR+(Mesocotyl+AND+length)

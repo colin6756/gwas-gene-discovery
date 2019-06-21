@@ -1,0 +1,1 @@
+SNPnum	CHR	snpBP	P	logP
