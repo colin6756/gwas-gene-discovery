@@ -6,7 +6,7 @@ Tool for discovering potential genes of interest from output of GWAS analysis so
 
 ## Overview
 The instructions below provide users with a copy of this program which can be directly used or adapted for their own project. 
-The first component of the program searches through the databases of Ensembl Rest Server and returns Ensembl IDs of genes positioned within a designated base-pair distance around SNPs occurences in GWAS that are statistically associated to a phenotype.
+The first component of the program searches Ensembl database using the [species overlap API].(https://rest.ensembl.org/documentation/info/overlap_region) It then returns IDs of genes positioned within a designated base-pair distance around SNPs occurences in GWAS that are statistically associated to a phenotype. As indiciated by API description in the link, ID of genes partially overlapping that region might also be recovered.
 
 The second component then input the gene IDs into Knetminer in addition to key word descriptions of the phenotypes contained within a plain text file. This will return for each gene a hyperlink to the network visualisations displaying QTLs, orthologs, publications etc related to the gene therefore accelerating and generating new insights for research.
 
@@ -14,13 +14,13 @@ The second component then input the gene IDs into Knetminer in addition to key w
 
 
 ## Prerequisites
-* The script can run on any machine able to access linux terminal with either python 2.7 and above or python 3. 
+* The script can run on any computer with access to Python2.7 and above or any versions of Python3. 
 
-* The program does not require heavy computational resources. However, as the user may prefer high performance computing the instructions on how to set up and run the program on Rothhpc4 server at Rothamsted Research managed by the Easybuild framework bas been included below. The User should read instructions specific to any other HPC frameworks.
+* The program does not require heavy computational resources. However, as the user may prefer high performance computing the instructions on how to set up and run the program on a node managed by the Easybuild framework has been included below. The User should read set up instructions specific to any other HPC frameworks.
 
-* In addition to either Python version, the user should ensure they have installed Requests, Pandas and Numpy module into Python path. See **3. Installing requests** in **Instructions** on how to do this.
+* In addition to either Python version, the user should ensure they have installed Requests, Pandas and Numpy libraries into Python path. See **3. Installing requests** in **Instructions** on how to do this.
 
-* Python virtual environments, e.g. virtualenv for python2 or pyvenv for python3. Virtual environment is required for installation of numpy and pandas.
+* Python virtual environments, e.g. virtualenv for python2 or pyvenv for python3. If the user does not have root permission on Easybuild a virtual environment is required for installation of numpy and pandas through pip.
 
 
 
@@ -29,11 +29,9 @@ The second component then input the gene IDs into Knetminer in addition to key w
 This is a quick tutorial to get the user started by reproducing the outputs of map_snp_to_gene_vEN.py for 2 different GWAS output spreadsheets, GAPIT.MLM.DTF.GWAS.Results.csv and GAPIT.MLM.blupWidth.GWAS.Results.csv as seen in the 2 directories of the same names. The tutorial generally assume the user has access to Rothamsted Research facility's Rothhpc4 cluster.
 
 #### 1.Downloading the repository
-Clone this repository with the GitHub URL using either Git or a Git GUI. The user should obtain a directroy named gwas-gene-discovery containing identical contents to the GitHub repository.
+Clone this repository with the GitHub URL using either Git or a Git GUI. The user should obtain a directory named gwas-gene-discovery containing identical contents to the GitHub repository.
 
-#### 2. Accessing compute node of Rothhpc4 Server managed by Easybuild
- Requests is already installed onto standard compute nodes of Rothhpc4 server which can be logged in as shown below. For machines without access to Rothamsted's HPC clusters, read **standard linux terminals** in step 3.
-
+#### 2. Accessing compute node on Easybuild
 The user can check available compute nodes by the command:
 ```
 sinfo 
@@ -43,32 +41,31 @@ If available, login to a standard compute node on Rothhpc4 using:
 srun --pty bash -i
 ```
 
-#### 3.OPTIONAL: Setting up a virtual environment on Rothhpc4 HPC cluster or standard Linux Terminal
-
-###### Virtual environment on Rothhpc4 with Easybuild
-A virtual environment is not compulsory for Rothhpc4 users as Requests is pre-installed in Python path on compute nodes. However, for other machines with EasyBuild frameworks outside of Rothamsted Research, the user should set up a virtual environment and install requests by following instructions below.
-
+#### 3.Setting up a virtual environment on Easybuild
+A virtual environment is required for pip installation of numpy, pandas and requests.
 Check all the available versions of python currently on cluster:
 ```
 module avail Python
 ```
-Afer a Python2 or Python3 version has been selected either edit the sbatch script in this repository, virtualenv_setup.sbatch or execute the commands below.
+Afer a Python2.7 and above or Python3 version has been selected either edit the sbatch script in this repository, virtualenv_setup.sbatch or execute the commands below.
 
 ```
 module load <Python version>
 virtualenv <name of Python virtual environment>
 source </path to env>/bin/activate/
 ```
-The user can return to the virtual environment in another session with:
+The user can return to the virtual environment in a new session after logging out by:
 ```
 module load <Python version>
 source </path to env>/bin/activate/
 ```
   
 #### 4.Installing python request library
-Requests is needed for the steps that send HTTP request protocols found in the script. The following commands can install requests either within or outside a virtual environment:
+Requests is needed for the steps that send HTTP request protocols found in the script while Numpy and Pandas are required for obtaining information from Kentminer API. Use pip to install the following library:
 ```
 pip install requests
+pip install pandas
+pip install numpy
 ```
 
 #### 5.Execution of script
@@ -123,19 +120,10 @@ Knetminer
 
 
 
-
-## Versions
-This is the most stable and latest script. An older archived version of this script exists but takes input of genomic references of Oryza Sativa from IRRI instead of Ensembl.
-
-
-
-
 ## Authors
 Keywan-Hassani Pak
 Colin Li
 
-## License
-MIT license.
 
 
 ## Acknowledgement
