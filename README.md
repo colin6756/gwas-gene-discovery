@@ -18,15 +18,13 @@ The second component then input the gene IDs into Knetminer in addition to key w
 
 * The program does not require heavy computational resources. However, as the user may prefer high performance computing the instructions on how to set up and run the program on a node managed by the Easybuild framework has been included below. The User should read set up instructions specific to any other HPC frameworks.
 
-* In addition to either Python version, the user should ensure they have installed Requests, Pandas and Numpy libraries into Python path. See **3. Installing requests** in **Instructions** on how to do this.
-
-* Python virtual environments, e.g. virtualenv for python2 or pyvenv for python3. If the user does not have root permission on Easybuild a virtual environment is required for installation of numpy and pandas through pip.
+* Python virtual environments, e.g. virtualenv for python2 or pyvenv for python3. If the user does not have root permission on Easybuild a virtual environment is required for installation of numpy and pandas through pip. See **3. Installing requests** in **Instructions** on how to do this.
 
 
 
 
 ## Tutorial and usage instructions
-This is a quick tutorial to get the user started by reproducing the outputs of map_snp_to_gene_vEN.py for 2 different GWAS output spreadsheets, GAPIT.MLM.DTF.GWAS.Results.csv and GAPIT.MLM.blupWidth.GWAS.Results.csv as seen in the 2 directories of the same names. The tutorial generally assume the user has access to Rothamsted Research facility's Rothhpc4 cluster.
+This is a quick tutorial to get the user started by reproducing the outputs of map_snp_to_gene_vEN.py for 2 different GWAS output spreadsheets, GAPIT.MLM.DTF.GWAS.Results.csv and GAPIT.MLM.blupWidth.GWAS.Results.csv as seen in the 2 directories of the same names. The tutorial generally assume the user is using linux managed by Easybuild.
 
 #### 1.Downloading the repository
 Clone this repository with the GitHub URL using either Git or a Git GUI. The user should obtain a directory named gwas-gene-discovery containing identical contents to the GitHub repository.
@@ -116,18 +114,26 @@ Inspect directories /MLM.blupWidth.GWAS.Results and /MLM.DTF.GWAS.Results. The s
 
 ## External tools included
 Ensembl rest server.
+
+
 Knetminer
 
 
 
 ## Authors
 Keywan-Hassani Pak
+
+
 Colin Li
 
 
 
 ## Acknowledgement
 Ensembl
+
+
 Knetminer
+
+
 Rothamsted Resarch
 
