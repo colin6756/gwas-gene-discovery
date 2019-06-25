@@ -6,7 +6,7 @@ Tool for discovering potential genes of interest from output of GWAS analysis so
 
 ## Overview
 The instructions below provide users with a copy of this program which can be directly used or adapted for their own project. 
-The first component of the program searches Ensembl database using the [species overlap API](https://rest.ensembl.org/documentation/info/overlap_region) and returns IDs of genes positioned within a designated base-pair distance around each SNP statistically associated to a phenotype. As indiciated by API description in the link, ID of genes partially overlapping with but not fully inside the region will also be recovered.
+The first component of the program searches Ensembl database using the [species overlap API](https://rest.ensembl.org/documentation/info/overlap_region) and returns IDs of genes positioned within a designated base-pair distance around each SNP statistically associated to a phenotype. As indicated by API description in the link, ID of genes partially overlapping with but not fully inside the region will also be recovered.
 
 The second component then input the gene IDs into Knetminer in addition to key word descriptions of the phenotypes contained within a plain text file. This will return for each gene a hyperlink to the network visualisations displaying QTLs, orthologs, publications etc related to the gene therefore accelerating and generating new insights for research.
 
