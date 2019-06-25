@@ -68,7 +68,7 @@ pip install pandas
 #### 5.Execution of script
 The command:
 ```
-python map_snp_to_gene_vEn.py -h
+python map_snp_to_gene.py -h
 ```
 Returns the usage of the script as the following:
 ```
