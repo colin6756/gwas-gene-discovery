@@ -72,7 +72,8 @@ python map_snp_to_gene.py -h
 ```
 Returns the usage of the script as the following:
 ```
-map_snp_to_gene.py [-h] [-p P] [-d D] file list species
+usage: map_snp_to_gene.py [-h] [--logP LOGP] [--distance DISTANCE]
+                          file list species
 ```
 The **mandatory arguments** are:
 * File. A spreadsheet containing the results of GWAS analysis. The fields of spreadsheet should be arranged in the order below as the script was originally designed for GAPIT software outputs (examples being 2 csv files in repository).:
