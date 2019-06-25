@@ -59,7 +59,7 @@ source </path to env>/bin/activate/
 ```
   
 #### 4.Installing python request library
-Requests is needed for the steps that send HTTP request protocols found in the script while Numpy and Pandas are required for obtaining information from Knetminer API. Pandas library includes Numpy therefore use pip to install the 2 libraries:
+Requests is needed for the steps that send HTTP request protocols found in the script while Numpy and Pandas are required for tabulating information from Knetminer API. Pandas library includes Numpy therefore use pip to install the 2 libraries:
 ```
 pip install requests
 pip install pandas
