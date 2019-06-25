@@ -106,7 +106,7 @@ python map_snp_to_gene.py GAPIT.MLM.DTF.GWAS.Results.csv mock_keyword_list.txt 1
 #### 6. Output information
 Inspect directories /MLM.blupWidth.GWAS.Results and /MLM.DTF.GWAS.Results. The script has produced a directory of the same name for each input spreadhseet. Within each directory, 3 files can be found:
 * filtered_snps.txt. This lists all the significant SNPs incrementally named from 1. Use the row number in spreadsheet to track the exact SNP ID. e.g. In /MLM.blupWidth.GWAS.Results, SNPnum 36524 in filtered_snps.txt is the 36524th SNP found in the input CSV spreadsheet, its ID is 23974957.
-* summary_genes_discovered.txt. This contains the significant SNPs and the geneIDs found within the user-defined or default distance around the SNP. Additional information include for each gene a Knetscore assessing relevance of gene to provided traits and a genepage URL to Knetminer's network view showing orthologous relationships, traits, publications.
+* summary_genes_discovered.txt. This contains the significant SNPs and the geneIDs found within the user-defined or default distance around the SNP. Additional information include for each gene a Knetscore and a genepage URL to Knetminer's network view . The Knetscore column assesses the relevance of the gene to the trait or traits of interest provided in the keyword list file. The higher the knetscore, the more likely the gene is to influence the trait. The network view column contains URL addresses to networks of Knetminer which displays related orthologues, other traits encoded by the gene and publications etc. 
 
 Rerunning the script will overwrite the previous results in the directory.
 
