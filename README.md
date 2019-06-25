@@ -108,7 +108,7 @@ Inspect directories /MLM.blupWidth.GWAS.Results and /MLM.DTF.GWAS.Results. The s
 * filtered_snps.txt. This lists all the significant SNPs incrementally named from 1. Use the row number in spreadsheet to track the exact SNP ID. e.g. In /MLM.blupWidth.GWAS.Results, SNPnum 36524 in filtered_snps.txt is the 36524th SNP found in the input CSV spreadsheet, its ID is 23974957.
 * summary_genes_discovered.txt. This contains the significant SNPs and the geneIDs found within the user-defined or default distance around the SNP. Additional information include for each gene a Knetscore assessing relevance of gene to provided traits and a genepage URL to Knetminer's network view showing orthologous relationships, traits, publications.
 
-If a run of the script stops before completion due to errors independent of the script, re-running the script will overwrite the previous results in the directory.
+Rerunning the script will overwrite the previous results in the directory.
 
 
 ## External tools included
