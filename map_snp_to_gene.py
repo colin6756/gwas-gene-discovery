@@ -30,7 +30,9 @@ def sigsnps(filtered_snps):
         next(f)
         logP_threshold = args.logP
         with open(filtered_snps, "w") as ft:
+            #name snp incrementally as 1, 2, 3 etc in chronology.
             snp = 0
+            #add headers
             print("{}\t{}\t{}\t{}\t{}".format("SNPnum","CHR","snpBP","P","logP"), file=ft)
             for line in f:
                 snp += 1
@@ -45,17 +47,16 @@ def sigsnps(filtered_snps):
                     species="triticum_aestivum"
                 elif args.species == 3:
                     species="arabidopsis_thaliana"
-
+                #only do requests for SNPs exceeding threshold.
                 if logP > logP_threshold:
                     server = "http://rest.ensembl.org"
                     ext = "/overlap/region/{}/{}:{}-{}:1?feature=variation".format(species, chro_snp,bp_snp,bp_snp)
                     r = requests.get(server+ext, headers={ "Content-Type" : "application/json"})
                     decoded = r.json()
-
+                    #check if requests is successful
                     if not r.ok:
                         r.raise_for_status()
                         sys.exit()
-                        print("Request has failed to get API")
 
                     for i in decoded:
                         if i == "\n":
@@ -72,6 +73,7 @@ def summary(filtered_snps, disc_genes):
     with open(filtered_snps, "r") as fr:
         next(fr)
         with open(disc_genes, "w") as fs:
+            #add headers
             print("GENE\tSNP_CHROMOSOME\tSNP_number\tSNP_Base_Position\tp-value\tlogP\tSNP_effect\tallele_info\tGene_description", file=fs)
             for line in fr:
                 col = line.split("\t")
@@ -96,6 +98,9 @@ def summary(filtered_snps, disc_genes):
 
                 r = requests.get(server+ext, headers={ "Content-Type" : "application/json"})
 
+                if not r.ok:
+                    r.raise_for_status()
+                    sys.exit()
 
                 #print(r.json())
                 if len(r.json()) != 0:
@@ -104,24 +109,28 @@ def summary(filtered_snps, disc_genes):
                     description = decoded[u'description']
                     sense = decoded[u'description']
 
+                    #add values to headers
                     print("{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}".format(gene, chrom, snpnum, position, pval, logP, snpeffect, alleleinfo, description), file=fs)
-
     #end of get genes
 
 def append_summary(disc_genes):
-    '''Query Knetminer and append to summary, Knetscore assessing gene relevance and
+    '''Query Knetminer and append to summary: Knetscore assessing gene relevance and
     genepage url for network view displaying orthology, traits etc relating to each gene discovered'''
     with open(args.list, "r") as fk:
         pheno=[]
         for line in fk:
             pheno.append(line.rstrip())
-        print(pheno)
-        summary=pd.read_csv(disc_genes, sep="\t")
 
         #creating knetminer genepage urls.
+        summary=pd.read_csv(disc_genes, sep="\t")
         network_view=[]
+        keyw1 = "%20OR%20".join("({})".format(i.replace(" ", "+AND+")) for i in pheno)
+        genestr=(",").join(list(summary[u'GENE']))
+        print("The genes found on ensembl:")
+        print(set(summary[u'GENE']))
+        print("The phenotypes they are suspected to influence:")
+        print(pheno)
         keyw2 = "+OR+".join("({})".format(i.replace(" ", "+AND+")) for i in pheno)
-        print(keyw2)
         #define species
         if args.species == 1:
             species="riceknet"
@@ -129,19 +138,18 @@ def append_summary(disc_genes):
             species="wheatknet"
         elif args.species == 3:
             species="araknet"
+        print("These are the URL to Knetminer networks. Also available in output summary.")
         for i in summary[u'GENE']:
             link="http://knetminer.rothamsted.ac.uk/{}/genepage?list={}&keyword={}".format(species, i, keyw2)
             r=requests.get(link)
+            print(r.url)
             network_view.append(r.url)
 
         #obtaining knetscores for genes
-        keyw1 = "%20OR%20".join("({})".format(i.replace(" ", "+AND+")) for i in pheno)
-        genestr=(",").join(list(summary[u'GENE']))
         link="http://knetminer.rothamsted.ac.uk/{}/genome?".format(species)
         parameters={"keyword":keyw1, "list":genestr}
         r=requests.get(link, params=parameters)
 
-        #check if requests is successful
         if not r.ok:
                 r.raise_for_status()
                 sys.exit()
@@ -166,10 +174,12 @@ def append_summary(disc_genes):
             #convert gene id to upper case to avoid sensitivity issues.
             i=i.upper()
             ordered_score.append(knetdict[u'{}'.format(i)])
+        #adding new columns to summary.
         summary[u'SCORE'] = ordered_score
         summary[u'network_view']=network_view
 
         summary.to_csv(disc_genes, sep="\t", index=False)
+    #end of append_summary function.
 
 
 def main():
@@ -198,7 +208,7 @@ def main():
 
     try:
         disc_genes="summary_genes_discovered.txt"
-        print("Searching with Knetminer for related genes to genes discovered from Ensembl.")
+        print("Searching Knetminer to append score and networks of genes discovered from Ensembl.")
         append_summary(disc_genes)
     except:
         raise
