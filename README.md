@@ -132,6 +132,6 @@ Ensembl variation resources
 Database Volume 2018
 
 
-Bioinformatics Department, Rothamsted Research
+Bioinformatics Department, Computational and Analytical Sciences, Rothamsted Research
 
 
