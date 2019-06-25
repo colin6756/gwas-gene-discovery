@@ -72,7 +72,7 @@ python map_snp_to_gene.py -h
 ```
 Returns the usage of the script as the following:
 ```
-map_snp_to_gene_vEn.py [-h] [-p P] [-d D] file list species
+map_snp_to_gene.py [-h] [-p P] [-d D] file list species
 ```
 The **mandatory arguments** are:
 * File. A spreadsheet containing the results of GWAS analysis. The fields of spreadsheet should be arranged in the order below as the script was originally designed for GAPIT software outputs (examples being 2 csv files in repository).:
@@ -96,10 +96,10 @@ The **optional arguments** are:
 If the User has either a standard or Easybuild terminal set up with requests installed, they can run the following commands. This will reproduce the directories: /MLM.blupWidth.GWAS.Results and /MLM.DTF.GWAS.Results which are example outputs produced with all optional parameters set to default for the 2 case study spreadsheets in repository.
 
 ```
-python map_snp_to_gene_vEn.py GAPIT.MLM.DTF.GWAS.Results.csv mock_keyword_list.txt 1
+python map_snp_to_gene.py GAPIT.MLM.DTF.GWAS.Results.csv mock_keyword_list.txt 1
 ```
 ```
-python map_snp_to_gene_vEn.py GAPIT.MLM.DTF.GWAS.Results.csv mock_keyword_list.txt 1
+python map_snp_to_gene.py GAPIT.MLM.DTF.GWAS.Results.csv mock_keyword_list.txt 1
 ```
 
 #### 6. Output information
