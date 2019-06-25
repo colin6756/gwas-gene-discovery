@@ -76,11 +76,11 @@ usage: map_snp_to_gene.py [-h] [--logP LOGP] [--distance DISTANCE]
                           file list species
 ```
 The **mandatory arguments** are:
-* File. A spreadsheet containing the results of GWAS analysis. The fields of spreadsheet should be arranged in the order below as the script was originally designed for GAPIT software outputs (examples being 2 csv files in repository).:
+* File. A spreadsheet containing the results of GWAS analysis. The columns of spreadsheet should be arranged in the order below (examples being 2 csv files in repository).:
 
-SNP [integer], Chromosome [integer], Position [integer], P.value [float]
+  SNP [integer], Chromosome [integer], Position [integer], P.value [float]
 
-* List. A plain text file containing one or more short description of the phenotype or phenotypes genes of interest are suspected to influence. The keywords should be vertically listed line by line. An example list, mock_keyword_list.txt can be found in the repository.
+* List. A plain text file containing one or more short description of the phenotype or phenotypes genes of interest are suspected to influence, listed line by line. An example list, mock_keyword_list.txt can be found in the repository.
 
 * Species. The species of organism subjected to gwas which the script will return gene IDs specific to. The options are currently 3 species represented by an integer value as shown below:
 
@@ -91,8 +91,8 @@ SNP [integer], Chromosome [integer], Position [integer], P.value [float]
 
 
 The **optional arguments** are:
-* logPthreshold: -log10(p-value of SNPs). It is used to extract SNPs strongly associated to phenotypes of interest as indicated by the association test of GWAS. The default value is 6 as per standard of majority of GWAS research papers. This needs to be provided as an integer.
-* Distance: The distance in base-pairs upstream and downstream from a SNP exceeding loPthreshold. All genes positioned within this genomic length are returned. 1kbp is the default value and this means a SNP occurence is upstream, downstream or within gene or genes located in 2kbp region window. This needs to be provided as an integer.
+* logPthreshold: -log10(p-value of SNPs). It is used to extract SNPs strongly associated to phenotypes of interest as indicated by the association test of GWAS. The default value is 6 as per standard of majority of GWAS research papers. This can be provided but as an integer.
+* Distance: The distance in base-pairs upstream and downstream from a SNP exceeding loPthreshold. All genes positioned within this genomic length are returned. 1kbp is the default value and this means a SNP occurence is upstream, downstream or within gene or genes located in 2kbp region window. This again can be provided but must be an integer.
 
 If the User has either a standard or Easybuild terminal set up with requests installed, they can run the following commands. This will reproduce the directories: /MLM.blupWidth.GWAS.Results and /MLM.DTF.GWAS.Results which are example outputs produced with all optional parameters set to default for the 2 case study spreadsheets in repository.
 
