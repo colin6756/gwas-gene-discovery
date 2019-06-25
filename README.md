@@ -91,10 +91,10 @@ The **mandatory arguments** are:
 
 
 The **optional arguments** are:
-* logPthreshold: -log10(p-value of SNPs). It is used to extract SNPs strongly associated to phenotypes of interest as indicated by the association test of GWAS. The default value is 6 as per standard of majority of GWAS research papers. This can be provided but as an integer.
-* Distance: The distance in base-pairs upstream and downstream from a SNP exceeding loPthreshold. All genes positioned within this genomic length are returned. 1kbp is the default value and this means a SNP occurence is upstream, downstream or within gene or genes located in 2kbp region window. This again can be provided but must be an integer.
+* logPthreshold: -log10(p-value of SNPs). It is used to extract SNPs strongly associated to phenotypes of interest as indicated by the association test of GWAS. The default value is 6 as per standard of majority of GWAS research papers. This can be provided but as an integer. e.g -p 7 for 7 as the threshold.
+* Distance: The distance in base-pairs upstream and downstream from a SNP exceeding loPthreshold. All genes positioned within this genomic length are returned. 1kbp is the default value and this means a SNP occurence is upstream, downstream or within gene or genes located in 2kbp region window. This again can be provided but must be an integer. e.g. -d 2000 for 2kbp.
 
-If the User has either a standard or Easybuild terminal set up with requests installed, they can run the following commands. This will reproduce the directories: /MLM.blupWidth.GWAS.Results and /MLM.DTF.GWAS.Results which are example outputs produced with all optional parameters set to default for the 2 case study spreadsheets in repository.
+If the User has either a standard or Easybuild terminal set up with requests and pandas installed, they can run the following commands. This will reproduce the directories: /MLM.blupWidth.GWAS.Results and /MLM.DTF.GWAS.Results which are example outputs produced with all optional parameters set to default for the 2 case study spreadsheets in repository.
 
 ```
 python map_snp_to_gene.py GAPIT.MLM.DTF.GWAS.Results.csv mock_keyword_list.txt 1
@@ -106,17 +106,16 @@ python map_snp_to_gene.py GAPIT.MLM.DTF.GWAS.Results.csv mock_keyword_list.txt 1
 #### 6. Output information
 Inspect directories /MLM.blupWidth.GWAS.Results and /MLM.DTF.GWAS.Results. The script has produced a directory of the same name for each input spreadhseet. Within each directory, 3 files can be found:
 * filtered_snps.txt. This lists all the significant SNPs incrementally named from 1. Use the row number in spreadsheet to track the exact SNP ID. e.g. In /MLM.blupWidth.GWAS.Results, SNPnum 36524 in filtered_snps.txt is the 36524th SNP found in the input CSV spreadsheet, its ID is 23974957.
-* summary_genes_discovered.txt. This contains the significant SNPs and the geneIDs found within the user-defined or default distance around the SNP. Additional information such as snp effects are included.
-* knet_summary.txt. This file contains for each geneID from summary_genes_discovered, the URL link to Knetminer's network view showing orthologous relationships, traits, publications etc with a KnetScore ranking predicted relevance to traits in keyword list.
+* summary_genes_discovered.txt. This contains the significant SNPs and the geneIDs found within the user-defined or default distance around the SNP. Additional information include for each gene a Knetscore assessing relevance of gene to provided traits and a genepage URL to Knetminer's network view showing orthologous relationships, traits, publications.
 
 
 
 
 ## External tools included
-Ensembl rest server.
+Ensembl rest server. [Overlap species API](https://rest.ensembl.org/documentation/info/overlap_region)
 
 
-Knetminer
+[Knetminer V3.0](https://knetminer.rothamsted.ac.uk/KnetMiner/)
 
 
 
@@ -129,11 +128,10 @@ Colin Li
 
 
 ## Acknowledgement
-Ensembl
+Ensembl variation resources
+Database Volume 2018
 
 
-Knetminer
+Bioinformatics Department, Rothamsted Research
 
-
-Rothamsted Resarch
 
