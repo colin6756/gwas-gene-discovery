@@ -45,7 +45,7 @@ Check all the available versions of python currently on cluster:
 ```
 module avail Python
 ```
-Afer a Python2.7 and above or Python3 version has been decided either edit the sbatch script in this repository, virtualenv_setup.sbatch or execute the commands below.
+After the user has decided on a version of Python2 that is 2.7 and above or Python3 execute the commands below.
 
 ```
 module load <Python version>
