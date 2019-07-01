@@ -1,3 +1,6 @@
-Germination
-Coleoptile length
-Mesocotyl length
+coleoptile length
+mesocotyl length
+root length
+seminal root length
+germination rate
+seedling growth

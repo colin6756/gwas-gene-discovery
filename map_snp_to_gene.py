@@ -121,7 +121,7 @@ def append_summary(disc_genes):
         for line in fk:
             pheno.append(line.rstrip())
 
-        #creating knetminer genepage urls.
+        #defining variables for genepage url later on.
         summary=pd.read_csv(disc_genes, sep="\t")
         network_view=[]
         keyw1 = "%20OR%20".join("({})".format(i.replace(" ", "+AND+")) for i in pheno)
@@ -138,12 +138,6 @@ def append_summary(disc_genes):
             species="wheatknet"
         elif args.species == 3:
             species="araknet"
-        print("These are the URL to Knetminer networks. Also available in output summary.")
-        for i in summary[u'GENE']:
-            link="http://knetminer.rothamsted.ac.uk/{}/genepage?list={}&keyword={}".format(species, i, keyw2)
-            r=requests.get(link)
-            print(r.url)
-            network_view.append(r.url)
 
         #obtaining knetscores for genes
         link="http://knetminer.rothamsted.ac.uk/{}/genome?".format(species)
@@ -173,10 +167,23 @@ def append_summary(disc_genes):
         for i in summary[u'GENE']:
             #convert gene id to upper case to avoid sensitivity issues.
             i=i.upper()
-            ordered_score.append(knetdict[u'{}'.format(i)])
+            try:
+                ordered_score.append(knetdict[u'{}'.format(i)])
+                # obtaining knetminer urls
+                genepage="http://knetminer.rothamsted.ac.uk/{}/genepage?list={}&keyword={}".format(species, i, keyw2)
+                r=requests.get(genepage)
+                print(r.url)
+                network_view.append(r.url)
+            except KeyError:
+                print("{} not found in Knetminer".format(i))
+                ordered_score.append("N/A")
+                network_view.append("N/A. Gene not in Knetminer.")
+                continue
         #adding new columns to summary.
         summary[u'SCORE'] = ordered_score
         summary[u'network_view']=network_view
+        print("These are the URL to Knetminer networks. Also available in output summary.")
+        print(network_view)
 
         summary.to_csv(disc_genes, sep="\t", index=False)
     #end of append_summary function.
