@@ -120,17 +120,7 @@ def append_summary(disc_genes):
         pheno=[]
         for line in fk:
             pheno.append(line.rstrip())
-
-        #defining variables for genepage url later on.
-        summary=pd.read_csv(disc_genes, sep="\t")
-        network_view=[]
-        keyw1 = "%20OR%20".join("({})".format(i.replace(" ", "+AND+")) for i in pheno)
-        genestr=(",").join(list(summary[u'GENE']))
-        print("The genes found on ensembl:")
-        print(set(summary[u'GENE']))
-        print("The phenotypes they are suspected to influence:")
-        print(pheno)
-        keyw2 = "+OR+".join("({})".format(i.replace(" ", "+AND+")) for i in pheno)
+        
         #define species
         if args.species == 1:
             species="riceknet"
@@ -140,7 +130,10 @@ def append_summary(disc_genes):
             species="araknet"
 
         #obtaining knetscores for genes
+        summary=pd.read_csv(disc_genes, sep="\t")
         link="http://knetminer.rothamsted.ac.uk/{}/genome?".format(species)
+        keyw1 = "%20OR%20".join("({})".format(i.replace(" ", "+AND+")) for i in pheno)
+        genestr=(",").join(list(summary[u'GENE']))
         parameters={"keyword":keyw1, "list":genestr}
         r=requests.get(link, params=parameters)
 
@@ -164,6 +157,15 @@ def append_summary(disc_genes):
         #map genes to snps via a dictionary.
         knetdict=dict(zip(knetgenes, knetscores))
         ordered_score=[]
+         #defining variables for genepage url.
+        network_view=[]
+        print("The genes found on ensembl:")
+        print(set(summary[u'GENE']))
+        print("The phenotypes they are suspected to influence:")
+        print(pheno)
+        keyw2 = "+OR+".join("({})".format(i.replace(" ", "+AND+")) for i in pheno)
+        
+
         for i in summary[u'GENE']:
             #convert gene id to upper case to avoid sensitivity issues.
             i=i.upper()
@@ -172,7 +174,6 @@ def append_summary(disc_genes):
                 # obtaining knetminer urls
                 genepage="http://knetminer.rothamsted.ac.uk/{}/genepage?list={}&keyword={}".format(species, i, keyw2)
                 r=requests.get(genepage)
-                print(r.url)
                 network_view.append(r.url)
             except KeyError:
                 print("{} not found in Knetminer".format(i))
@@ -183,7 +184,8 @@ def append_summary(disc_genes):
         summary[u'SCORE'] = ordered_score
         summary[u'network_view']=network_view
         print("These are the URL to Knetminer networks. Also available in output summary.")
-        print(network_view)
+        for i in network_view:
+            print(str(i))
 
         summary.to_csv(disc_genes, sep="\t", index=False)
     #end of append_summary function.
