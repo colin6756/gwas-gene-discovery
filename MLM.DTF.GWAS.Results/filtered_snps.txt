@@ -12,4 +12,4 @@ SNPnum	CHR	snpBP	P	logP
 11	6	2898059	3.07e-07	6.512861624522814	upstream_gene_variant	['A', 'G']
 12	3	1249272	6.13e-07	6.212539525481585	upstream_gene_variant	['A', 'T']
 13	6	2894959	6.85e-07	6.164309428507575	intron_variant	['T', 'C']
-14	4	17422232	9.85e-07	6.006563769502388	intron_variant	['T', 'C']
+14	4	17422232	9.85e-07	6.006563769502388	No data from ensembl	Mo data from ensembl

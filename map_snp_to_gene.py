@@ -233,12 +233,35 @@ def main():
 
 if __name__ == "__main__":
     #creating parameters for the end-user.
-    parser = argparse.ArgumentParser()
-    parser.add_argument("file", help="name of .csv output from GAPIT gwas tool. For specific formatting, check on ReadMe", type=str)
-    parser.add_argument("list", help="a plain text file containing description of phenotypes of interest line by line")
-    parser.add_argument("species", help="Choose an integer out of three to select the species of organism subjected to gwas. 1 being rice, 2 being wheat and 3 being arabidopsis", type=int)
-    parser.add_argument("--logP", default=6, help="integer value of logP threshold (-log10 of pvalue) for SNPs", type=int)
-    parser.add_argument("--distance", default=1000, help="integer value of a distance window in base pair upstream or downstream of a SNP exceeding logPthreshold.", type=int)
+    parser = argparse.ArgumentParser(description=
+    '''
+    Delimit mandatory arguments by space and optional arguments by -- 
+    For example, heigh_gwas.csv list.txt 2 --logP 7 --distance 500. 
+    This means input height_gwas spreadsheet, use keywords from list.txt, use wheat as species, 
+    specify 7 as logP threshold and 500bp distance.
+    ''')
+    
+    parser.add_argument("file", 
+    help='''The name of .csv output GWAS study.
+    For specific formatting, check on ReadMe in Github.''', type=str)
+
+    parser.add_argument("list", 
+    help="A plain text file containing description of phenotypes of interest line by line.")
+    
+    parser.add_argument("species", 
+    help='''Choose an integer out of three to specify the species of organism subjected to gwas.
+     1 representing rice, 2 representing wheat and 3 representing arabidopsis.''', type=int)
+    
+    parser.add_argument("--logP", default=6, 
+    help='''An integer value specifying logP threshold (-log10 of pvalue) for SNPs, 
+    for example --logP 8 specify logP as 8. 
+    The default value is 6.''', type=int)
+    
+    parser.add_argument("--distance", default=1000, 
+    help='''An integer value specifying distance in base pairs upstream or downstream of a significant SNP from which loci will be returned. 
+    For example --distance 2000 means 2kbp upstream and downstream around a SNP thus in total the window is 4kbp in length.
+     The default value is 1kbp.''', type=int)
+    
     args = parser.parse_args()
 
     main()
