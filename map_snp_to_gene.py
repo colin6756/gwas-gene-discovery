@@ -52,18 +52,22 @@ def sigsnps(filtered_snps):
                     server = "http://rest.ensembl.org"
                     ext = "/overlap/region/{}/{}:{}-{}:1?feature=variation".format(species, chro_snp,bp_snp,bp_snp)
                     r = requests.get(server+ext, headers={ "Content-Type" : "application/json"})
-                    decoded = r.json()
                     #check if requests is successful
                     if not r.ok:
                         r.raise_for_status()
                         sys.exit()
 
-                    for i in decoded:
-                        if i == "\n":
-                            continue
-                        data=decoded[0]
-                        snpeffect = str(data[u'consequence_type'])
-                        alleleinfo = str(data[u'alleles'])
+                    decoded = r.json()
+                    if decoded != []:
+                        for i in decoded:
+                            if i == "\n":
+                                continue
+                            data=decoded[0]
+                            snpeffect = str(data[u'consequence_type'])
+                            alleleinfo = str(data[u'alleles'])
+                    elif decoded == []:
+                        snpeffect = "No data from ensembl"
+                        alleleinfo = "Mo data from ensembl"
                     print("{}\t{}\t{}\t{}\t{}\t{}\t{}".format(snp,chro_snp,bp_snp,pval,logP, snpeffect, alleleinfo), file=ft)
     # end of formatcsv
 
@@ -120,7 +124,7 @@ def append_summary(disc_genes):
         pheno=[]
         for line in fk:
             pheno.append(line.rstrip())
-        
+
         #define species
         if args.species == 1:
             species="riceknet"
@@ -164,7 +168,7 @@ def append_summary(disc_genes):
         print("The phenotypes they are suspected to influence:")
         print(pheno)
         keyw2 = "+OR+".join("({})".format(i.replace(" ", "+AND+")) for i in pheno)
-        
+
 
         for i in summary[u'GENE']:
             #convert gene id to upper case to avoid sensitivity issues.
